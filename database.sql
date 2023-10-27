@@ -18,6 +18,7 @@
 --
 -- Table structure for table `assessments`
 --
+USE `marketinteldb`;
 
 DROP TABLE IF EXISTS `assessments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

@@ -5,36 +5,43 @@
         <?php
         if (isset($_SESSION["Username"])) {
             ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="dashboard.php">
-                        <i class="bi bi-shop"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li><!-- End Dashboard Nav -->
-    
-                <li class="nav-item">
-                    <a class="nav-link" href="manage-success-factors.php">
-                        <i class="bi bi-check-circle"></i>
-                        <span>Success Factors</span>
-                    </a>
-                </li><!-- End Success Factors Nav -->
-    
-                <li class="nav-item">
-                    <a class="nav-link" href="manage-swot-analysis.php">
-                        <i class="bi bi-file-bar-graph"></i>
-                        <span>SWOT Analysis</span>
-                    </a>
-                </li><!-- End SWOT Analysis Nav -->
-    
-                <li class="nav-item">
-                    <a class="nav-link" href="manage-competitors-features.php">
-                        <i class="bi bi-award"></i>
-                        <span>Competitors Features</span>
-                    </a>
-                </li><!-- End Competitors Features Nav -->
+            <li class="nav-item">
+                <a class="nav-link" href="dashboard.php">
+                    <i class="bi bi-shop"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link" href="manage-success-factors.php">
+                    <i class="bi bi-check-circle"></i>
+                    <span>Success Factors</span>
+                </a>
+            </li><!-- End Success Factors Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link" href="manage-swot-analysis.php">
+                    <i class="bi bi-file-bar-graph"></i>
+                    <span>SWOT Analysis</span>
+                </a>
+            </li><!-- End SWOT Analysis Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link" href="manage-competitors-features.php">
+                    <i class="bi bi-award"></i>
+                    <span>Competitors Features</span>
+                </a>
+            </li><!-- End Competitors Features Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link" href="msme-assessments.php">
+                    <i class="bi bi-clipboard-data"></i>
+                    <span>MSME Assessments</span>
+                </a>
+            </li><!-- End MSME Assessments Nav -->
             <?php
         } else {
-        ?>
+            ?>
             <li class="nav-item">
                 <a class="nav-link" href="msme.php">
                     <i class="bi bi-shop"></i>
@@ -62,7 +69,7 @@
                     <span>Competitors Features</span>
                 </a>
             </li><!-- End Competitors Features Nav -->
-        <?php
+            <?php
         }
         ?>
 

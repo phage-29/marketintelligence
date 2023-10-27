@@ -11,12 +11,15 @@ require_once "components/sidebar.php";
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title"><?= $page ?></h5>
+            <h5 class="card-title">
+              <?= $page ?>
+            </h5>
             <div class="row">
               <div class="col-md-6">
                 <div class="card">
                   <div class="card-header">
                     Strengths (S)
+                    <button class="btn btn-link float-end p-0 m-0"><strong><i class="bi bi-plus"></i></strong></button>
                   </div>
                   <div class="card-body">
                     <ul>
@@ -32,6 +35,7 @@ require_once "components/sidebar.php";
                 <div class="card">
                   <div class="card-header">
                     Weaknesses (W)
+                    <button class="btn btn-link float-end p-0 m-0"><strong><i class="bi bi-plus"></i></strong></button>
                   </div>
                   <div class="card-body">
                     <ul>
@@ -49,6 +53,7 @@ require_once "components/sidebar.php";
                 <div class="card">
                   <div class="card-header">
                     Opportunities (O)
+                    <button class="btn btn-link float-end p-0 m-0"><strong><i class="bi bi-plus"></i></strong></button>
                   </div>
                   <div class="card-body">
                     <ul>
@@ -64,6 +69,7 @@ require_once "components/sidebar.php";
                 <div class="card">
                   <div class="card-header">
                     Threats (T)
+                    <button class="btn btn-link float-end p-0 m-0"><strong><i class="bi bi-plus"></i></strong></button>
                   </div>
                   <div class="card-body">
                     <ul>

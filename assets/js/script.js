@@ -88,6 +88,36 @@ jQuery(document).ready(function () {
     });
   }
 
+  if ($("#Email").length) {
+    jQuery("#Email").on("change", function (e) {
+      jQuery.ajax({
+        type: "POST",
+        url: "includes/process.php",
+        data: { AutoFill: '', Email: $("#Email").val() },
+        dataType: "json",
+        success: function (response) {
+          if (response.length != 0) {
+            $('#FirstName').val(response[0].FirstName);
+            $('#MiddleName').val(response[0].MiddleName);
+            $('#LastName').val(response[0].LastName);
+            $('#Email').val(response[0].Email);
+            $('#Phone').val(response[0].Phone);
+            $('#Province').val(response[0].Province);
+            $('#IndustryCluster').val(response[0].IndustryCluster);
+            $('#BusinessName').val(response[0].BusinessName);
+          }
+        },
+        error: function () {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "An error occurred.",
+          });
+        },
+      });
+    });
+  }
+
   if ($("#SuccessFactor").length) {
     jQuery("#SuccessFactor").submit(function (e) {
       e.preventDefault();
