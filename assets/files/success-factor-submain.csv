@@ -1,0 +1,39 @@
+EC,EC1,Self-confidence,1,0.031428571
+EC,EC2,Goal Setting,2,0.029010989
+EC,EC3,Persistence,3,0.026593407
+EC,EC4,Opportunity Seeking / Creativity and Innovation,4,0.024175824
+EC,EC5,Risk taker,5,0.021758242
+EC,EC6,Persuasion and Networking (building new relationship and strengthening existing ones),6,0.019340659
+EC,EC7,Demand for quality & efficiancy,7,0.016923077
+EC,EC8,"Agility (Persuasive skills, influence in problem solving and resolves issues)",8,0.014505495
+EC,EC9,Leadership (resolves issues and management skills),9,0.012087912
+EC,EC10,Commitment to Work Contract,10,0.00967033
+EC,EC11,Specialized Entrpreneurial knowledge and expertise,11,0.007252747
+EC,EC12,Systematic Planning,12,0.004835165
+EC,EC13,Technological skills,13,0.002417582
+BP,BP1,Functional Business Plan with regular performance review,1,0.18
+MLC,MLC1,"established personnel and staff policies, rules and regulations",1,0.064
+MLC,MLC2,set direction of the company,2,0.048
+MLC,MLC3,Troubleshooting skills/systems,3,0.032
+MLC,MLC4,Presence of a CSR Program,4,0.016
+ANT,ANT1,Open to accepting idea of new technology,1,0.046666667
+ANT,ANT2,Improve the quality of products,2,0.037333333
+ANT,ANT3,Integrating new technology into system and process,3,0.028
+ANT,ANT4,New technologies in place,4,0.018666667
+ANT,ANT5,Reduce communication cost,5,0.009333333
+MC,MC1,awareness of market trends,1,0.03
+MC,MC2,Put premium on marketing products,2,0.025714286
+MC,MC3,Employ strategies to capture target market,3,0.021428571
+MC,MC4,E-commerce / Digitalization,4,0.017142857
+MC,MC5,Information Seeking,5,0.012857143
+MC,MC6,Establish proper channel of distribution,6,0.008571429
+MC,MC7,communication channel,7,0.004285714
+SPS,SPS1,Manual of operations,1,0.04
+SPS,SPS2,Services and product quality,2,0.03
+SPS,SPS3,Branding,3,0.02
+SPS,SPS4,Promotes productivity,4,0.01
+FEE,FE1,Available government support and incentives,1,0.026666667
+FEE,FE2,Empowered human capital,2,0.021333333
+FEE,FE3,Government rules & policies,3,0.016
+FEE,FE4,Strategic geographical location,4,0.010666667
+FEE,FE5,Satisfied tax systems,5,0.005333333

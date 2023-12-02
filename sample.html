@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Card with Modal</title>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Card Content</h5>
+                <ul id="card-list">
+                    <li><button type="button" class="btn btn-link">Item 1</button></li>
+                    <li><button type="button" class="btn btn-link">Item 2</button></li>
+                    <li><button type="button" class="btn btn-link">Item 3</button></li>
+                </ul>
+                <a href="#myModal" data-bs-toggle="modal" class="btn btn-primary">Open Modal</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+        class="modal fade"
+        id="myModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal Content</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="modal-list">
+                        <li><button type="button" class="btn btn-link">Modal Item 1</button></li>
+                        <li><button type="button" class="btn btn-link">Modal Item 2</button></li>
+                        <li><button type="button" class="btn btn-link">Modal Item 3</button></li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Click event handler for modal item buttons
+            $('#modal-list li button').click(function() {
+                var itemText = $(this).text();
+                $('#card-list').append('<li><button type="button" class="btn btn-link">' + itemText + '</button></li>');
+                $(this).parent().remove();
+            });
+
+            // Click event handler for card item buttons
+            $('#card-list li button').click(function() {
+                var itemText = $(this).text();
+                $('#modal-list').append('<li><button type="button" class="btn btn-link">' + itemText + '</button></li>');
+                $(this).parent().remove();
+            });
+        });
+    </script>
+</body>
+</html>

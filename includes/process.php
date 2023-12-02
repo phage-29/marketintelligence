@@ -19,69 +19,41 @@ if (isset($_POST['MSME'])) {
     $IndustryCluster = $conn->real_escape_string($_POST['IndustryCluster']);
     $BusinessName = $conn->real_escape_string($_POST['BusinessName']);
 
-    $query = "SELECT Email FROM msmes WHERE Email = ?";
-    $result = $conn->execute_query($query, [$Email]);
-    if ($result->num_rows) {
-        $query = "UPDATE `msmes` SET `FirstName` = ?,`MiddleName` = ?,`LastName` = ?,`Email` = ?,`Phone` = ?,`Province` = ?,`IndustryCluster` = ?,`BusinessName` = ? WHERE Email = ?";
-        $fields = [$FirstName, $MiddleName, $LastName, $Email, $Phone, $Province, $IndustryCluster, $BusinessName, $Email];
+    // Check if a record with the same email exists
+    $queryCheck = "SELECT * FROM `msmes` WHERE `Email` = ?";
+    $resultCheck = $conn->execute_query($queryCheck, [$Email]);
+
+    if ($resultCheck->num_rows > 0) {
+        // Record exists, update it
+        $queryUpdate = "UPDATE `msmes` SET `FirstName` = ?, `MiddleName` = ?, `LastName` = ?, `Phone` = ?, `Province` = ?, `IndustryCluster` = ?, `BusinessName` = ? WHERE `Email` = ?";
+        $resultUpdate = $conn->execute_query($queryUpdate, [$FirstName, $MiddleName, $LastName, $Phone, $Province, $IndustryCluster, $BusinessName, $Email]);
+
+        if ($resultUpdate) {
+            $_SESSION['Email'] = $Email;
+            $response['status'] = 'success';
+            $response['message'] = 'MSME information updated!';
+            $response['redirect'] = 'success-factors.php';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Update failed!';
+        }
     } else {
-        $query = "INSERT INTO `msmes` (`FirstName`,`MiddleName`,`LastName`,`Email`,`Phone`,`Province`,`IndustryCluster`,`BusinessName`) VALUES (?,?,?,?,?,?,?,?)";
-        $fields = [$FirstName, $MiddleName, $LastName, $Email, $Phone, $Province, $IndustryCluster, $BusinessName];
-    }
+        // Record doesn't exist, insert a new one
+        $queryInsert = "INSERT INTO `msmes` (`FirstName`, `MiddleName`, `LastName`, `Email`, `Phone`, `Province`, `IndustryCluster`, `BusinessName`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $resultInsert = $conn->execute_query($queryInsert, [$FirstName, $MiddleName, $LastName, $Email, $Phone, $Province, $IndustryCluster, $BusinessName]);
 
-    try {
-        $result = $conn->execute_query($query, $fields);
-
-        if ($result) {
-
+        if ($resultInsert) {
+            $_SESSION['Email'] = $Email;
             $response['status'] = 'success';
             $response['message'] = 'MSME registered!';
             $response['redirect'] = 'success-factors.php';
         } else {
-
             $response['status'] = 'error';
             $response['message'] = 'Registration failed!';
         }
-    } catch (Exception $e) {
-        $response['status'] = 'error';
-        $response['message'] = $e->getMessage();
     }
 }
 
-// Registration
-if (isset($_POST['Register'])) {
-
-    $FirstName = $conn->real_escape_string($_POST['FirstName']);
-    $MiddleName = $conn->real_escape_string($_POST['MiddleName']);
-    $LastName = $conn->real_escape_string($_POST['LastName']);
-    $Email = $conn->real_escape_string($_POST['Email']);
-    $Username = $conn->real_escape_string($_POST['Username']);
-    $Password = $conn->real_escape_string($_POST['Password']);
-
-    $HashedPassword = password_hash($Password, PASSWORD_DEFAULT);
-
-    $query = "INSERT INTO `users` (`FirstName`,`MiddleName`,`LastName`,`Email`,`Username`,`Password`) VALUES (?,?,?,?,?,?)";
-    try {
-
-        $result = $conn->execute_query($query, [$FirstName, $MiddleName, $LastName, $Email, $Username, $HashedPassword]);
-
-        if ($result) {
-
-            $response['status'] = 'success';
-            $response['message'] = 'Registration successful!';
-            $response['redirect'] = 'login.php';
-        } else {
-
-            $response['status'] = 'error';
-            $response['message'] = 'Registration failed!';
-        }
-    } catch (Exception $e) {
-        $response['status'] = 'error';
-        $response['message'] = $e->getMessage();
-    }
-}
-
-// Login
 if (isset($_POST['Login'])) {
 
     $Username = $conn->real_escape_string($_POST['Username']);
@@ -101,17 +73,17 @@ if (isset($_POST['Login'])) {
                 $_SESSION['Username'] = $Username;
                 $_SESSION['Role'] = $row->Role;
 
-                $response['status'] = 'success';
-                $response['message'] = 'Login successful!';
-                $response['redirect'] = 'index.php';
+                $response['status']   = 'success';
+                $response['message']  = 'Login successful!';
+                $response['redirect'] = 'dashboard.php';
             } else {
 
-                $response['status'] = 'error';
+                $response['status']  = 'error';
                 $response['message'] = 'Invalid Password!';
             }
         } else {
 
-            $response['status'] = 'error';
+            $response['status']  = 'error';
             $response['message'] = 'Username not found!';
         }
     } catch (Exception $e) {
@@ -120,102 +92,484 @@ if (isset($_POST['Login'])) {
     }
 }
 
-// Update Profile
-if (isset($_POST['UpdateProfile'])) {
-    $FirstName = $conn->real_escape_string($_POST['FirstName']);
-    $MiddleName = $conn->real_escape_string($_POST['MiddleName']);
-    $LastName = $conn->real_escape_string($_POST['LastName']);
-    $Username = $conn->real_escape_string($_POST['Username']);
-    $Email = $conn->real_escape_string($_POST['Email']);
+if (isset($_POST["AddSFM"])) {
+    $Name = $conn->real_escape_string($_POST['Name']);
+    $Description = $conn->real_escape_string($_POST['Description']);
+    $Rank = $conn->real_escape_string($_POST['Rank']);
+    $Weight = $conn->real_escape_string($_POST['Weight']);
 
-    $query = "UPDATE `users` SET `Username`=?,`FirstName`=?,`MiddleName`=?,`LastName`=?,`Email`=? WHERE `Username`=?";
-    try {
+    $query = "SELECT * FROM `sfmains` WHERE `Name` = ?";
+    $result = $conn->execute_query($query, [$Name]);
 
-        $result = $conn->execute_query($query, [$Username, $FirstName, $MiddleName, $LastName, $Email, $_SESSION["Username"]]);
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name already exists.';
+    } else {
+        $query2 = "INSERT INTO `sfmains` (`Name`, `Description`, `Rank`, `Weight`) VALUES (?, ?, ?, ?)";
+        $result2 = $conn->execute_query($query2, [$Name, $Description, $Rank, $Weight]);
 
-        if ($result) {
-
-            $_SESSION["Username"] = $Username;
-
+        if ($result2) {
             $response['status'] = 'success';
-            $response['message'] = 'Profile Updated!';
-            $response['redirect'] = 'profile.php';
+            $response['message'] = 'Record inserted successfully.';
         } else {
-
             $response['status'] = 'error';
-            $response['message'] = 'Failed Updating Profile!';
+            $response['message'] = 'Failed to insert the record.';
         }
-    } catch (Exception $e) {
+    }
+}
+if (isset($_POST["EditSFM"])) {
+    $id = $conn->real_escape_string($_POST['EditSFM']);
+    $Name = $conn->real_escape_string($_POST['Name']);
+    $Description = $conn->real_escape_string($_POST['Description']);
+    $Rank = $conn->real_escape_string($_POST['Rank']);
+    $Weight = $conn->real_escape_string($_POST['Weight']);
+
+    $query = "SELECT * FROM `sfmains` WHERE `Name` = ? AND `id` != ?";
+    $result = $conn->execute_query($query, [$Name, $id]);
+
+    if ($result->num_rows) {
         $response['status'] = 'error';
-        $response['message'] = $e->getMessage();
+        $response['message'] = 'Record with the same name already exists.';
+    } else {
+        $query2 = "UPDATE `sfmains` SET `Name` = ?, `Description` = ?, `Rank` = ?, `Weight` = ? WHERE `id` = ?";
+        $result2 = $conn->execute_query($query2, [$Name, $Description, $Rank, $Weight, $id]);
+
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record updated successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to update the record.';
+        }
+    }
+}
+if (isset($_POST["DelSFM"])) {
+    $id = $conn->real_escape_string($_POST['DelSFM']);
+
+    $query = "DELETE FROM `sfmains` WHERE `id` = ?";
+    $result = $conn->execute_query($query, [$id]);
+
+    if ($result) {
+        $response['status'] = 'success';
+        $response['message'] = 'Record deleted successfully.';
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = 'Failed to delete the record.';
+    }
+}
+if (isset($_POST["AddSFS"])) {
+    $SFMID = $conn->real_escape_string($_POST['SFMID']);
+    $Name = $conn->real_escape_string($_POST['Name']);
+    $Description = $conn->real_escape_string($_POST['Description']);
+    $Rank = $conn->real_escape_string($_POST['Rank']);
+    $Weight = $conn->real_escape_string($_POST['Weight']);
+
+    $query = "SELECT * FROM `sfsubmains` WHERE `Name` = ?";
+    $result = $conn->execute_query($query, [$Name]);
+
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name already exists.';
+    } else {
+        $query2 = "INSERT INTO `sfsubmains` (`SFMID`, `Name`, `Description`, `Rank`, `Weight`) VALUES (?, ?, ?, ?, ?)";
+        $result2 = $conn->execute_query($query2, [$SFMID, $Name, $Description, $Rank, $Weight]);
+
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record inserted successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to insert the record.';
+        }
+    }
+}
+if (isset($_POST["EditSFS"])) {
+    $id = $conn->real_escape_string($_POST['EditSFS']);
+    $SFMID = $conn->real_escape_string($_POST['Main']);
+    $Name = $conn->real_escape_string($_POST['Submain']);
+    $Description = $conn->real_escape_string($_POST['Description']);
+    $Rank = $conn->real_escape_string($_POST['Rank']);
+    $Weight = $conn->real_escape_string($_POST['Weight']);
+
+    $query = "SELECT * FROM `sfsubmains` WHERE `Name` = ? AND `id` != ?";
+    $result = $conn->execute_query($query, [$Name, $id]);
+
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name already exists.';
+    } else {
+        $query2 = "UPDATE `sfsubmains` SET `SFMID` = ?, `Name` = ?, `Description` = ?, `Rank` = ?, `Weight` = ? WHERE `id` = ?";
+        $result2 = $conn->execute_query($query2, [$SFMID, $Name, $Description, $Rank, $Weight, $id]);
+
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record updated successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to update the record.';
+        }
+    }
+}
+if (isset($_POST["DelSFS"])) {
+    $id = $conn->real_escape_string($_POST['DelSFS']);
+
+    $query = "DELETE FROM `sfsubmains` WHERE `id` = ?";
+    $result = $conn->execute_query($query, [$id]);
+
+    if ($result) {
+        $response['status'] = 'success';
+        $response['message'] = 'Record deleted successfully.';
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = 'Failed to delete the record.';
     }
 }
 
-// Update Password
-if (isset($_POST['UpdatePassword'])) {
-    $CurrentPassword = $conn->real_escape_string($_POST['CurrentPassword']);
-    $NewPassword = $conn->real_escape_string($_POST['NewPassword']);
-    $RenewPassword = $conn->real_escape_string($_POST['RenewPassword']);
 
-    $query = "SELECT * FROM users where Username=?";
+if (isset($_POST["AddSWOT"])) {
+    $Category = $conn->real_escape_string($_POST['Category']);
+    $Name = $conn->real_escape_string($_POST['Name']);
+    $Description = $conn->real_escape_string($_POST['Description']);
 
-    try {
-        $result = $conn->execute_query($query, [$_SESSION['Username']]);
+    // Check if a record with the same name and category already exists
+    $query = "SELECT * FROM `swots` WHERE `Name` = ? AND `Category` = ?";
+    $result = $conn->execute_query($query, [$Name, $Category]);
 
-        if ($result && $result->num_rows === 1) {
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name and category already exists.';
+    } else {
+        $query2 = "INSERT INTO `swots` (`Category`, `Name`, `Description`) VALUES (?, ?, ?)";
+        $result2 = $conn->execute_query($query2, [$Category, $Name, $Description]);
 
-            $row = $result->fetch_object();
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record inserted successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to insert the record.';
+        }
+    }
+}
+if (isset($_POST["EditSWOT"])) {
+    $id = $conn->real_escape_string($_POST['EditSWOT']);
+    $Category = $conn->real_escape_string($_POST['Category']);
+    $Name = $conn->real_escape_string($_POST['Name']);
+    $Description = $conn->real_escape_string($_POST['Description']);
 
-            if (password_verify($CurrentPassword, $row->Password)) {
-                if ($NewPassword == $RenewPassword) {
-                    $HashedPassword = password_hash($NewPassword, PASSWORD_DEFAULT);
-                    $query2 = "UPDATE `users` SET `Password`=? WHERE `Username`=?";
-                    try {
+    // Check if a record with the same name, category, and a different ID already exists
+    $query = "SELECT * FROM `swots` WHERE `Name` = ? AND `Category` = ? AND `id` != ?";
+    $result = $conn->execute_query($query, [$Name, $Category, $id]);
 
-                        $result2 = $conn->execute_query($query2, [$HashedPassword, $_SESSION["Username"]]);
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name and category already exists.';
+    } else {
+        $query2 = "UPDATE `swots` SET `Category` = ?, `Name` = ?, `Description` = ? WHERE `id` = ?";
+        $result2 = $conn->execute_query($query2, [$Category, $Name, $Description, $id]);
 
-                        if ($result2) {
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record updated successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to update the record.';
+        }
+    }
+}
+if (isset($_POST["DelSWOT"])) {
+    $id = $conn->real_escape_string($_POST['DelSWOT']);
 
-                            $response['status'] = 'success';
-                            $response['message'] = 'Password Changed!';
-                            $response['redirect'] = 'profile.php';
-                        } else {
+    $query = "DELETE FROM `swots` WHERE `id` = ?";
+    $result = $conn->execute_query($query, [$id]);
 
-                            $response['status'] = 'error';
-                            $response['message'] = 'Failed changing password!';
-                        }
-                    } catch (Exception $e) {
-                        $response['status'] = 'error';
-                        $response['message'] = $e->getMessage();
-                    }
-                } else {
+    if ($result) {
+        $response['status'] = 'success';
+        $response['message'] = 'Record deleted successfully.';
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = 'Failed to delete the record.';
+    }
+}
 
-                    $response['status'] = 'error';
-                    $response['message'] = 'Password don\'t match!';
-                }
-            } else {
 
-                $response['status'] = 'error';
-                $response['message'] = 'Invalid Password!';
+if (isset($_POST["AddCFM"])) {
+    $Name = $conn->real_escape_string($_POST['Name']);
+    $Description = $conn->real_escape_string($_POST['Description']);
+
+    $query = "SELECT * FROM `cfmains` WHERE `Name` = ?";
+    $result = $conn->execute_query($query, [$Name]);
+
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name already exists.';
+    } else {
+        $query2 = "INSERT INTO `cfmains` (`Name`, `Description`) VALUES (?, ?)";
+        $result2 = $conn->execute_query($query2, [$Name, $Description]);
+
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record inserted successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to insert the record.';
+        }
+    }
+}
+if (isset($_POST["EditCFM"])) {
+    $id = $conn->real_escape_string($_POST['EditCFM']);
+    $Name = $conn->real_escape_string($_POST['Name']);
+    $Description = $conn->real_escape_string($_POST['Description']);
+
+    $query = "SELECT * FROM `cfmains` WHERE `Name` = ? AND `id` != ?";
+    $result = $conn->execute_query($query, [$Name, $id]);
+
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name already exists.';
+    } else {
+        $query2 = "UPDATE `cfmains` SET `Name` = ?, `Description` = ? WHERE `id` = ?";
+        $result2 = $conn->execute_query($query2, [$Name, $Description, $id]);
+
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record updated successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to update the record.';
+        }
+    }
+}
+if (isset($_POST["DelCFM"])) {
+    $id = $conn->real_escape_string($_POST['DelCFM']);
+
+    $query = "DELETE FROM `cfmains` WHERE `id` = ?";
+    $result = $conn->execute_query($query, [$id]);
+
+    if ($result) {
+        $response['status'] = 'success';
+        $response['message'] = 'Record deleted successfully.';
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = 'Failed to delete the record.';
+    }
+}
+if (isset($_POST["AddCFS"])) {
+    $CFMID = $conn->real_escape_string($_POST['CFMID']);
+    $Name = $conn->real_escape_string($_POST['Name']);
+    $Description = $conn->real_escape_string($_POST['Description']);
+
+    $query = "SELECT * FROM `cfsubmains` WHERE `Name` = ?";
+    $result = $conn->execute_query($query, [$Name]);
+
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name already exists.';
+    } else {
+        $query2 = "INSERT INTO `cfsubmains` (`CFMID`, `Name`, `Description`) VALUES (?, ?, ?)";
+        $result2 = $conn->execute_query($query2, [$CFMID, $Name, $Description]);
+
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record inserted successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to insert the record.';
+        }
+    }
+}
+if (isset($_POST["EditCFS"])) {
+    $id = $conn->real_escape_string($_POST['EditCFS']);
+    $CFMID = $conn->real_escape_string($_POST['Main']);
+    $Name = $conn->real_escape_string($_POST['Submain']);
+    $Description = $conn->real_escape_string($_POST['Description']);
+
+    $query = "SELECT * FROM `cfsubmains` WHERE `Name` = ? AND `id` != ?";
+    $result = $conn->execute_query($query, [$Name, $id]);
+
+    if ($result->num_rows) {
+        $response['status'] = 'error';
+        $response['message'] = 'Record with the same name already exists.';
+    } else {
+        $query2 = "UPDATE `cfsubmains` SET `CFMID` = ?, `Name` = ?, `Description` = ? WHERE `id` = ?";
+        $result2 = $conn->execute_query($query2, [$CFMID, $Name, $Description, $id]);
+
+        if ($result2) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record updated successfully.';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to update the record.';
+        }
+    }
+}
+if (isset($_POST["DelCFS"])) {
+    $id = $conn->real_escape_string($_POST['DelCFS']);
+
+    $query = "DELETE FROM `cfsubmains` WHERE `id` = ?";
+    $result = $conn->execute_query($query, [$id]);
+
+    if ($result) {
+        $response['status'] = 'success';
+        $response['message'] = 'Record deleted successfully.';
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = 'Failed to delete the record.';
+    }
+}
+
+if (isset($_POST['AddSFAssessment'])) {
+    $MSMEID = $conn->real_escape_string($_POST['MSMEID']);
+    $SFMID = $conn->real_escape_string($_POST['SFMID']);
+    $SFSID = $conn->real_escape_string($_POST['SFSID']);
+    $Value = $conn->real_escape_string($_POST['Value']);
+
+    $queryCheck = "SELECT * FROM `assessments` WHERE `MSMEID` = ? AND `SFMID` = ? AND `SFSID` = ?";
+    $resultCheck = $conn->execute_query($queryCheck, [$MSMEID, $SFMID, $SFSID]);
+
+    if ($resultCheck->num_rows > 0) {
+        $queryUpdate = "UPDATE `assessments` SET `Value` = ? WHERE `MSMEID` = ? AND `SFMID` = ? AND `SFSID` = ?";
+        $resultUpdate = $conn->execute_query($queryUpdate, [$Value, $MSMEID, $SFMID, $SFSID]);
+
+        if ($resultUpdate) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record updated successfully.';
+
+            $query = "SELECT (SELECT COUNT(id) from sfsubmains)-(SELECT COUNT(id) from assessments WHERE MSMEID=?) as Remaining";
+            $result = $conn->execute_query($query, [$MSMEID]);
+            if ($result->fetch_object()->Remaining == 0) {
+?>
+                <script>
+                    console.log("ALL GOODS");
+                </script>
+            <?php
             }
         } else {
-
             $response['status'] = 'error';
-            $response['message'] = 'Username not found!';
+            $response['message'] = 'Failed to update the record.';
         }
-    } catch (Exception $e) {
-        $response['status'] = 'error';
-        $response['message'] = $e->getMessage();
+    } else {
+        // Record doesn't exist, insert a new one
+        $queryInsert = "INSERT INTO `assessments` (`MSMEID`, `SFMID`, `SFSID`, `Value`) VALUES (?, ?, ?, ?)";
+        $resultInsert = $conn->execute_query($queryInsert, [$MSMEID, $SFMID, $SFSID, $Value]);
+
+        if ($resultInsert) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record inserted successfully.';
+
+            $query = "SELECT (SELECT COUNT(id) from sfsubmains)-(SELECT COUNT(id) from assessments WHERE MSMEID=?) as Remaining";
+            $result = $conn->execute_query($query, [$MSMEID]);
+            if ($result->fetch_object()->Remaining == 0) {
+            ?>
+                <script>
+                    console.log("ALL GOODS");
+                </script>
+<?php
+            }
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to insert the record.';
+        }
     }
 }
 
-if (isset($_POST['AutoFill'])) {
-    $Email = $conn->real_escape_string($_POST['Email']);
+if (isset($_POST['AddSWOTAssessment'])) {
+    $MSMEID = $conn->real_escape_string($_POST['MSMEID']);
+    $SWOTID = $conn->real_escape_string($_POST['SWOTID']);
 
-    $query = "SELECT * FROM msmes WHERE Email=?";
-    $result = $conn->execute_query($query, [$Email]);
-    while ($row = $result->fetch_object()) {
-        $response[] = $row;
+    $queryCheckDuplicate = "SELECT * FROM `assessments` WHERE `MSMEID` = ? AND `SWOTID` = ?";
+    $resultCheckDuplicate = $conn->execute_query($queryCheckDuplicate, [$MSMEID, $SWOTID]);
+
+    if ($resultCheckDuplicate->num_rows > 0) {
+        $response['status'] = 'error';
+        $response['message'] = 'Duplicate record';
+    } else {
+        $queryInsert = "INSERT INTO `assessments` (`MSMEID`, `SWOTID`) VALUES (?, ?)";
+        $resultInsert = $conn->execute_query($queryInsert, [$MSMEID, $SWOTID]);
+
+        if ($resultInsert) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record inserted successfully';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to insert the record';
+        }
+    }
+}
+
+
+if (isset($_POST['DeleteSWOTAssessment'])) {
+    $MSMEID = $conn->real_escape_string($_POST['MSMEID']);
+    $SWOTID = $conn->real_escape_string($_POST['SWOTID']);
+
+    $queryCheck = "SELECT * FROM `assessments` WHERE `MSMEID` = ? AND `SWOTID` = ?";
+    $resultCheck = $conn->execute_query($queryCheck, [$MSMEID, $SWOTID]);
+
+    if ($resultCheck->num_rows > 0) {
+        $queryDelete = "DELETE FROM `assessments` WHERE `MSMEID` = ? AND `SWOTID` = ?";
+        $resultDelete = $conn->execute_query($queryDelete, [$MSMEID, $SWOTID]);
+
+        if ($resultDelete) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record deleted successfully';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to delete the record';
+        }
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = 'Record not found';
+    }
+}
+
+if (isset($_POST['AddCFAssessment'])) {
+    $MSMEID = $conn->real_escape_string($_POST['MSMEID']);
+    $CFMID = $conn->real_escape_string($_POST['CFMID']);
+    $CFSID = $conn->real_escape_string($_POST['CFSID']);
+
+    $queryCheckDuplicate = "SELECT * FROM `assessments` WHERE `MSMEID` = ? AND `CFMID` = ? AND `CFSID` = ?";
+    $resultCheckDuplicate = $conn->execute_query($queryCheckDuplicate, [$MSMEID, $CFMID, $CFSID]);
+
+    if ($resultCheckDuplicate->num_rows > 0) {
+        $response['status'] = 'error';
+        $response['message'] = 'Duplicate record';
+    } else {
+        $queryInsert = "INSERT INTO `assessments` (`MSMEID`, `CFMID`, `CFSID`) VALUES (?, ?, ?)";
+        $resultInsert = $conn->execute_query($queryInsert, [$MSMEID, $CFMID, $CFSID]);
+
+        if ($resultInsert) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record inserted successfully';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to insert the record';
+        }
+    }
+}
+
+
+if (isset($_POST['DeleteCFAssessment'])) {
+    $MSMEID = $conn->real_escape_string($_POST['MSMEID']);
+    $CFMID = $conn->real_escape_string($_POST['CFMID']);
+    $CFSID = $conn->real_escape_string($_POST['CFSID']);
+
+    $queryCheck = "SELECT * FROM `assessments` WHERE `MSMEID` = ? AND `CFMID` = ? AND `CFSID` = ?";
+    $resultCheck = $conn->execute_query($queryCheck, [$MSMEID, $CFMID, $CFSID]);
+
+    if ($resultCheck->num_rows > 0) {
+        $queryDelete = "DELETE FROM `assessments` WHERE `MSMEID` = ? AND `CFMID` = ? AND `CFSID` = ?";
+        $resultDelete = $conn->execute_query($queryDelete, [$MSMEID, $CFMID, $CFSID]);
+
+        if ($resultDelete) {
+            $response['status'] = 'success';
+            $response['message'] = 'Record deleted successfully';
+        } else {
+            $response['status'] = 'error';
+            $response['message'] = 'Failed to delete the record';
+        }
+    } else {
+        $response['status'] = 'error';
+        $response['message'] = 'Record not found';
     }
 }
 

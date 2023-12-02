@@ -4,7 +4,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
         <?php
         if (isset($_SESSION["Username"])) {
-            ?>
+        ?>
             <li class="nav-item">
                 <a class="nav-link" href="dashboard.php">
                     <i class="bi bi-shop"></i>
@@ -34,14 +34,14 @@
             </li><!-- End Competitors Features Nav -->
 
             <li class="nav-item">
-                <a class="nav-link" href="msme-assessments.php">
-                    <i class="bi bi-clipboard-data"></i>
-                    <span>MSME Assessments</span>
+                <a class="nav-link" href="manage-responses.php">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span>MSME Responses</span>
                 </a>
-            </li><!-- End MSME Assessments Nav -->
-            <?php
+            </li><!-- End MSME Responses Nav -->
+        <?php
         } else {
-            ?>
+        ?>
             <li class="nav-item">
                 <a class="nav-link" href="msme.php">
                     <i class="bi bi-shop"></i>
@@ -69,7 +69,7 @@
                     <span>Competitors Features</span>
                 </a>
             </li><!-- End Competitors Features Nav -->
-            <?php
+        <?php
         }
         ?>
 

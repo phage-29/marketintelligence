@@ -1,5 +1,6 @@
 <?php
 $page = "MSME";
+require_once "includes/msme_session.php";
 require_once "components/header.php";
 require_once "components/topbar.php";
 require_once "components/sidebar.php";
@@ -11,15 +12,13 @@ require_once "components/sidebar.php";
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">
-              <?= $page ?>
-            </h5>
+            <h5 class="card-title"><?= $page ?> Profile</h5>
             <form id="MSME">
               <div class="mb-3">
                 <label for="Email" class="form-label">Email</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                  <input type="email" class="form-control" id="Email" name="Email" placeholder="Enter Email" required />
+                  <input type="email" class="form-control" id="Email" name="Email" value="<?= isset($acc) ? $acc->Email : '' ?>" placeholder="Enter Email" required />
                 </div>
               </div>
               <div class="row">
@@ -27,48 +26,45 @@ require_once "components/sidebar.php";
                   <label for="FirstName" class="form-label">First Name</label>
                   <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" class="form-control" id="FirstName" name="FirstName"
-                      placeholder="Enter First Name" required />
+                    <input type="text" class="form-control" id="FirstName" name="FirstName" value="<?= isset($acc) ? $acc->FirstName : '' ?>" placeholder="Enter First Name" required />
                   </div>
                 </div>
                 <div class="mb-3 col-lg-4">
                   <label for="MiddleName" class="form-label">Middle Name</label>
                   <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" class="form-control" id="MiddleName" name="MiddleName"
-                      placeholder="Enter Middle Name">
+                    <input type="text" class="form-control" id="MiddleName" name="MiddleName" value="<?= isset($acc) ? $acc->MiddleName : '' ?>" placeholder="Enter Middle Name">
                   </div>
                 </div>
                 <div class="mb-3 col-lg-4">
                   <label for="LastName" class="form-label">Last Name</label>
                   <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Enter Last Name"
-                      required />
+                    <input type="text" class="form-control" id="LastName" name="LastName" value="<?= isset($acc) ? $acc->LastName : '' ?>" placeholder="Enter Last Name" required />
                   </div>
                 </div>
               </div>
               <div class="row">
+                <div class="mb-3 col-lg-6">
+                  <label for="Phone" class="form-label">Phone</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                    <input type="tel" class="form-control" id="Phone" name="Phone" value="<?= isset($acc) ? $acc->Phone : '' ?>" placeholder="Enter Phone" required />
+                  </div>
+                </div>
                 <div class="mb-3 col-lg-6">
                   <label for="Province" class="form-label">Province</label>
                   <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
                     <select class="form-select" id="Province" name="Province" required>
                       <option value="" class="text-muted" selected disabled>--Select a Province--</option>
-                      <option value="Aklan">Aklan</option>
-                      <option value="Antique">Antique</option>
-                      <option value="Capiz">Capiz</option>
-                      <option value="Guimaras">Guimaras</option>
-                      <option value="Iloilo">Iloilo</option>
-                      <option value="Negros Occidental">Negros Occidental</option>
+                      <option value="Aklan" <?= isset($acc) && $acc->Province == "Aklan" ? 'selected' : '' ?>>Aklan</option>
+                      <option value="Antique" <?= isset($acc) && $acc->Province == "Antique" ? 'selected' : '' ?>>Antique</option>
+                      <option value="Capiz" <?= isset($acc) && $acc->Province == "Capiz" ? 'selected' : '' ?>>Capiz</option>
+                      <option value="Guimaras" <?= isset($acc) && $acc->Province == "Guimaras" ? 'selected' : '' ?>>Guimaras</option>
+                      <option value="Iloilo" <?= isset($acc) && $acc->Province == "Iloilo" ? 'selected' : '' ?>>Iloilo</option>
+                      <option value="Negros Occidental" <?= isset($acc) && $acc->Province == "Negros Occidental" ? 'selected' : '' ?>>Negros Occidental</option>
                     </select>
-                  </div>
-                </div>
-                <div class="mb-3 col-lg-6">
-                  <label for="Phone" class="form-label">Phone</label>
-                  <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                    <input type="tel" class="form-control" id="Phone" name="Phone" placeholder="Enter Phone" required />
                   </div>
                 </div>
               </div>
@@ -78,26 +74,26 @@ require_once "components/sidebar.php";
                   <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
                   <select class="form-select" id="IndustryCluster" name="IndustryCluster" required>
                     <option value="" class="text-muted" selected disabled>--Select an Industry Cluster--</option>
-                    <option value="Abaca">Abaca</option>
-                    <option value="Agribusiness">Agribusiness</option>
-                    <option value="Bamboo">Bamboo</option>
-                    <option value="Cacao">Cacao</option>
-                    <option value="Coco Coir">Coco Coir</option>
-                    <option value="Coconut">Coconut</option>
-                    <option value="Coffee">Coffee</option>
-                    <option value="Construction">Construction</option>
-                    <option value="Creative Industry">Creative Industry</option>
-                    <option value="Dairy">Dairy</option>
-                    <option value="Fish and Fish Products">Fish and Fish Products</option>
-                    <option value="High Value Vegetables">High Value Vegetables</option>
-                    <option value="ICT">ICT</option>
-                    <option value="Mfg Aerospace Parts">Mfg Aerospace Parts</option>
-                    <option value="Mfg Agribusiness Bamboo">Mfg Agribusiness Bamboo</option>
-                    <option value="Mfg Agribusiness Cacao">Mfg Agribusiness Cacao</option>
-                    <option value="Mfg Agribusiness Coconut">Mfg Agribusiness Coconut</option>
-                    <option value="Mfg Agribusiness Coffee">Mfg Agribusiness Coffee</option>
-                    <option value="Mfg Agribusiness Palm Oil">Mfg Agribusiness Palm Oil</option>
-                    <option value="Mfg Agribusiness Rubber">Mfg Agribusiness Rubber</option>
+                    <option value="Abaca" <?= isset($acc) && $acc->IndustryCluster == "Abaca" ? 'selected' : '' ?>>Abaca</option>
+                    <option value="Agribusiness" <?= isset($acc) && $acc->IndustryCluster == "Agribusiness" ? 'selected' : '' ?>>Agribusiness</option>
+                    <option value="Bamboo" <?= isset($acc) && $acc->IndustryCluster == "Bamboo" ? 'selected' : '' ?>>Bamboo</option>
+                    <option value="Cacao" <?= isset($acc) && $acc->IndustryCluster == "Cacao" ? 'selected' : '' ?>>Cacao</option>
+                    <option value="Coco Coir" <?= isset($acc) && $acc->IndustryCluster == "Coco Coir" ? 'selected' : '' ?>>Coco Coir</option>
+                    <option value="Coconut" <?= isset($acc) && $acc->IndustryCluster == "Coconut" ? 'selected' : '' ?>>Coconut</option>
+                    <option value="Coffee" <?= isset($acc) && $acc->IndustryCluster == "Coffee" ? 'selected' : '' ?>>Coffee</option>
+                    <option value="Construction" <?= isset($acc) && $acc->IndustryCluster == "Construction" ? 'selected' : '' ?>>Construction</option>
+                    <option value="Creative Industry" <?= isset($acc) && $acc->IndustryCluster == "Creative Industry" ? 'selected' : '' ?>>Creative Industry</option>
+                    <option value="Dairy" <?= isset($acc) && $acc->IndustryCluster == "Dairy" ? 'selected' : '' ?>>Dairy</option>
+                    <option value="Fish and Fish Products" <?= isset($acc) && $acc->IndustryCluster == "Fish and Fish Products" ? 'selected' : '' ?>>Fish and Fish Products</option>
+                    <option value="High Value Vegetables" <?= isset($acc) && $acc->IndustryCluster == "High Value Vegetables" ? 'selected' : '' ?>>High Value Vegetables</option>
+                    <option value="ICT" <?= isset($acc) && $acc->IndustryCluster == "ICT" ? 'selected' : '' ?>>ICT</option>
+                    <option value="Mfg Aerospace Parts" <?= isset($acc) && $acc->IndustryCluster == "Mfg Aerospace Parts" ? 'selected' : '' ?>>Mfg Aerospace Parts</option>
+                    <option value="Mfg Agribusiness Bamboo" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Bamboo" ? 'selected' : '' ?>>Mfg Agribusiness Bamboo</option>
+                    <option value="Mfg Agribusiness Cacao" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Cacao" ? 'selected' : '' ?>>Mfg Agribusiness Cacao</option>
+                    <option value="Mfg Agribusiness Coconut" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Coconut" ? 'selected' : '' ?>>Mfg Agribusiness Coconut</option>
+                    <option value="Mfg Agribusiness Coffee" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Coffee" ? 'selected' : '' ?>>Mfg Agribusiness Coffee</option>
+                    <option value="Mfg Agribusiness Palm Oil" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Palm Oil" ? 'selected' : '' ?>>Mfg Agribusiness Palm Oil</option>
+                    <option value="Mfg Agribusiness Rubber" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Rubber" ? 'selected' : '' ?>>Mfg Agribusiness Rubber</option>
                   </select>
                 </div>
               </div>
@@ -105,18 +101,14 @@ require_once "components/sidebar.php";
                 <label for="BusinessName" class="form-label">Business Name</label>
                 <div class="input-group">
                   <span class="input-group-text"><i class="bi bi-building"></i></span>
-                  <input type="text" class="form-control" id="BusinessName" name="BusinessName"
-                    placeholder="Enter Business Name" required />
+                  <input type="text" class="form-control" id="BusinessName" name="BusinessName" value="<?= isset($acc) ? $acc->BusinessName : '' ?>" placeholder="Enter Business Name" required />
                 </div>
               </div>
-              <div class="mb-3">
+              <div class="mb-3 text-end">
                 <input type="hidden" name="MSME" />
-                <button type="submit" class="btn btn-primary float-end">Next</button>
-                <button type="button" class="btn btn-outline-primary float-end mx-3" data-bs-toggle="modal"
-                  data-bs-target="#emailModal">Auto Fill</button>
+                <button type="submit" class="btn btn-primary">Next</button>
               </div>
             </form>
-            <!-- Enter Email Modal -->
           </div>
         </div>
 
