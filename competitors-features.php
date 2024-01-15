@@ -90,7 +90,7 @@ require_once "components/sidebar.php";
               </table>
               <div class="text-end mt-3">
                 <a class="btn btn-primary" href="swot-analysis.php">Previous</a>
-                <button type="submit" class="btn btn-primary" name="sub_cf">Generate Scorecard</button>
+                <a href="generated-scorecard.php" class="btn btn-primary" name="sub_cf">Generate Scorecard</a>
               </div>
             </form>
           </div>

@@ -450,8 +450,8 @@ if (isset($_POST['AddSFAssessment'])) {
         }
     } else {
         // Record doesn't exist, insert a new one
-        $queryInsert = "INSERT INTO `assessments` (`MSMEID`, `SFMID`, `SFSID`, `Value`) VALUES (?, ?, ?, ?)";
-        $resultInsert = $conn->execute_query($queryInsert, [$MSMEID, $SFMID, $SFSID, $Value]);
+        $queryInsert = "INSERT INTO `assessments` (`AssessmentType`, `MSMEID`, `SFMID`, `SFSID`, `Value`) VALUES (?, ?, ?, ?, ?)";
+        $resultInsert = $conn->execute_query($queryInsert, ['success factors', $MSMEID, $SFMID, $SFSID, $Value]);
 
         if ($resultInsert) {
             $response['status'] = 'success';
@@ -484,8 +484,8 @@ if (isset($_POST['AddSWOTAssessment'])) {
         $response['status'] = 'error';
         $response['message'] = 'Duplicate record';
     } else {
-        $queryInsert = "INSERT INTO `assessments` (`MSMEID`, `SWOTID`) VALUES (?, ?)";
-        $resultInsert = $conn->execute_query($queryInsert, [$MSMEID, $SWOTID]);
+        $queryInsert = "INSERT INTO `assessments` (`AssessmentType`, `MSMEID`, `SWOTID`) VALUES (?, ?, ?)";
+        $resultInsert = $conn->execute_query($queryInsert, ['swot analysis', $MSMEID, $SWOTID]);
 
         if ($resultInsert) {
             $response['status'] = 'success';
@@ -534,8 +534,8 @@ if (isset($_POST['AddCFAssessment'])) {
         $response['status'] = 'error';
         $response['message'] = 'Duplicate record';
     } else {
-        $queryInsert = "INSERT INTO `assessments` (`MSMEID`, `CFMID`, `CFSID`) VALUES (?, ?, ?)";
-        $resultInsert = $conn->execute_query($queryInsert, [$MSMEID, $CFMID, $CFSID]);
+        $queryInsert = "INSERT INTO `assessments` (`AssessmentType`, `MSMEID`, `CFMID`, `CFSID`) VALUES (?, ?, ?, ?)";
+        $resultInsert = $conn->execute_query($queryInsert, ['competitors features', $MSMEID, $CFMID, $CFSID]);
 
         if ($resultInsert) {
             $response['status'] = 'success';
