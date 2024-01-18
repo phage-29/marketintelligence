@@ -56,11 +56,155 @@ require_once "components/header.php";
                         </div>
                         <h5 class="card-title">Success Factors</h5>
                         <div class="row">
+                            <div class="col-lg-6">
+                                <!-- Radar Chart -->
+                                <div id="radarChart"></div>
+
+                                <script>
+                                    var options = {
+                                        series: [{
+                                            name: 'Score',
+                                            data: [
+                                                <?php
+                                                $query = "SELECT sfm.*, (
+                                                            SELECT
+                                                                SUM(a.`Value`) / SUM(5) * sfm.`Weight`
+                                                            FROM assessments a
+                                                            WHERE
+                                                                a.`MSMEID` = 1
+                                                                AND a.`AssessmentType` = 'success factors'
+                                                                AND a.`SFMID` = sfm.id
+                                                        ) AS TotalValue, ((
+                                                            SELECT
+                                                                SUM(a.`Value`) / SUM(5) * sfm.`Weight`
+                                                            FROM assessments a
+                                                            WHERE
+                                                                a.`MSMEID` = 1
+                                                                AND a.`AssessmentType` = 'success factors'
+                                                                AND a.`SFMID` = sfm.id
+                                                        ) / sfm.Weight)*100 as ChartData
+                                                    FROM sfmains sfm";
+                                                $result = $conn->execute_query($query);
+                                                while ($row = $result->fetch_object()) {
+                                                    echo $row->ChartData . ",";
+                                                }
+                                                ?>
+                                            ],
+                                        }],
+                                        chart: {
+                                            height: 350,
+                                            type: 'radar',
+                                        },
+                                        title: {
+                                            text: 'Main Success Factors'
+                                        },
+                                        xaxis: {
+                                            categories: [
+                                                <?php
+                                                $query = "SELECT sfm.*, (
+                                                                SELECT
+                                                                    SUM(a.`Value`) / SUM(5) * sfm.`Weight`
+                                                                FROM assessments a
+                                                                WHERE
+                                                                    a.`MSMEID` = 1
+                                                                    AND a.`AssessmentType` = 'success factors'
+                                                                    AND a.`SFMID` = sfm.id
+                                                            ) AS TotalValue, ((
+                                                                SELECT
+                                                                    SUM(a.`Value`) / SUM(5) * sfm.`Weight`
+                                                                FROM assessments a
+                                                                WHERE
+                                                                    a.`MSMEID` = 1
+                                                                    AND a.`AssessmentType` = 'success factors'
+                                                                    AND a.`SFMID` = sfm.id
+                                                            ) / sfm.Weight)*100 as ChartData
+                                                        FROM sfmains sfm";
+                                                $result = $conn->execute_query($query);
+                                                while ($row = $result->fetch_object()) {
+                                                    echo "'" . $row->Name . "',";
+                                                }
+                                                ?>
+                                            ]
+                                        }
+                                    };
+
+                                    var chart = new ApexCharts(document.querySelector("#radarChart"), options);
+                                    chart.render();
+                                </script>
+                                <!-- End Radar Chart -->
+                            </div>
                             <?php
-                            $query = "SELECT * FROM sfmains";
-                            $result = $conn->query($query);
-                            while ($row = $result->fetch_object()){
-                                ?><p><?= $row->Name ?> | <?= $row->Description ?></p><?php
+                            $query = $conn->query("SELECT * FROM sfmains");
+                            while ($row = $query->fetch_object()) {
+                            ?>
+                                <div class="col-lg-12">
+                                <h5 class="card-title"><?= $row->Name . " | " . $row->Description ?></h5>
+                                    <table class="table" id="sfsdatatable<?= $row->id ?>" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Rank</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $query2 = "
+                                            SELECT sfs.*, (
+                                                    SELECT
+                                                        a.`Value` / 5 * sfs.`Weight`
+                                                    FROM assessments a
+                                                    WHERE
+                                                        a.`MSMEID` = 1
+                                                        AND a.`AssessmentType` = 'success factors'
+                                                        AND a.`SFSID` = sfs.id
+                                                ) AS TotalValue,
+                                                ((
+                                                    SELECT
+                                                        a.`Value` / 5 * sfs.`Weight`
+                                                    FROM assessments a
+                                                    WHERE
+                                                        a.`MSMEID` = 1
+                                                        AND a.`AssessmentType` = 'success factors'
+                                                        AND a.`SFSID` = sfs.id
+                                                ) / sfs.`Weight`)*100 AS Perc
+                                            FROM sfsubmains sfs
+                                            WHERE sfs.SFMID = " . $row->id . "
+                                            ORDER BY sfs.Rank ASC
+                                            ";
+                                            $result2 = $conn->query($query2);
+                                            while ($row2 = $result2->fetch_object()) {
+                                            ?>
+                                                <tr>
+                                                    <td><?= $row2->Name ?></td>
+                                                    <td><?= $row2->Description ?></td>
+                                                    <td><?= $row2->Rank ?></td>
+                                                    <td><?= number_format($row2->Perc, 2, '.', '') ?>%</td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                    <script>
+                                        $(document).ready(function() {
+                                            function initializeDataTable(tableId) {
+                                                $(tableId).removeAttr("hidden");
+                                                $(tableId).DataTable({
+                                                    scrollX: true,
+                                                    searching: false,
+                                                    paging: false,
+                                                    "aaSorting": [],
+                                                    info: false
+                                                });
+                                            }
+                                            initializeDataTable("#sfsdatatable<?= $row->id ?>");
+                                        })
+                                    </script>
+                                    <hr>
+                                </div>
+                            <?php
                             }
                             ?>
                         </div>
@@ -133,6 +277,9 @@ require_once "components/header.php";
                                             <tr>
                                                 <td>
                                                     <?= $row2->Name ?>
+                                                    <button type="button" data-msmeid="<?= $acc->id ?>" data-cfmid="<?= $row->id ?>" data-cfsid="<?= $row2->id ?>" id="Add_<?= $CfsId ?>" class="btn btn-success float-end add-cf" style="display: none;">Add</button>
+                                                    <button type="button" data-msmeid="<?= $acc->id ?>" data-cfmid="<?= $row->id ?>" data-cfsid="<?= $row2->id ?>" id="Remove_<?= $CfsId ?>" class="btn btn-danger float-end del-cf" style="display: none;">Remove</button>
+                                                    <input type="checkbox" id="cfs_<?= $CfsId ?>" name="cfs_<?= $CfsId ?>" style="visibility: hidden;" />
                                                 </td>
 
                                                 <td id="indicator_<?= $CfsId ?>" style="background: red">
@@ -144,14 +291,14 @@ require_once "components/header.php";
 
                                                     $("#Add_<?= $CfsId ?>").on("click", function() {
                                                         $("#indicator_<?= $CfsId ?>").css('background', 'green');
-                                                        $("#Remove_<?= $CfsId ?>").show();
-                                                        $("#Add_<?= $CfsId ?>").hide();
+                                                        // $("#Remove_<?= $CfsId ?>").show();
+                                                        // $("#Add_<?= $CfsId ?>").hide();
                                                         $("#cfs_<?= $CfsId ?>").attr('checked', 'true');
                                                     });
                                                     $("#Remove_<?= $CfsId ?>").on("click", function() {
                                                         $("#indicator_<?= $CfsId ?>").css('background', 'red');
-                                                        $("#Remove_<?= $CfsId ?>").hide();
-                                                        $("#Add_<?= $CfsId ?>").show();
+                                                        // $("#Remove_<?= $CfsId ?>").hide();
+                                                        // $("#Add_<?= $CfsId ?>").show();
                                                         $("#cfs_<?= $CfsId ?>").removeAttr('checked');
                                                     });
 
