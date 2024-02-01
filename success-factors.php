@@ -31,11 +31,11 @@ require_once "components/sidebar.php";
                           <thead>
                             <tr>
                               <th scope="col">Factors</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Strongly</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Agree</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Fair</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Disagree</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Strongly</th>
+                              <th scope="col" class="text-center" style="width: 8vw;">Very High</th>
+                              <th scope="col" class="text-center" style="width: 8vw;">High</th>
+                              <th scope="col" class="text-center" style="width: 8vw;">Average</th>
+                              <th scope="col" class="text-center" style="width: 8vw;">Low</th>
+                              <th scope="col" class="text-center" style="width: 8vw;">Very Low</th>
                             </tr>
                           </thead>
                           <tbody>
