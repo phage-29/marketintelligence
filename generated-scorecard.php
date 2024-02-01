@@ -10,53 +10,53 @@ require_once "components/header.php";
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">MSME Profile</h5>
                         <div class="row">
-                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                <br>
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">
-                                        <?= $acc->FirstName ?> <?= $acc->MiddleName ?> <?= $acc->LastName ?>
+                            <div class="col-lg-6">
+                        <h5 class="card-title">MSME Profile</h5>
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            <?= $acc->FirstName ?> <?= $acc->MiddleName ?> <?= $acc->LastName ?>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Email</div>
-                                    <div class="col-lg-9 col-md-8">
-                                        <?= $acc->Email ?>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Email</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            <?= $acc->Email ?>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Phone</div>
-                                    <div class="col-lg-9 col-md-8">
-                                        <?= $acc->Phone ?>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Phone</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            <?= $acc->Phone ?>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Province</div>
-                                    <div class="col-lg-9 col-md-8">
-                                        <?= $acc->Province ?>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Province</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            <?= $acc->Province ?>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Industry Cluster</div>
-                                    <div class="col-lg-9 col-md-8">
-                                        <?= $acc->IndustryCluster ?>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Industry Cluster</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            <?= $acc->IndustryCluster ?>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 label ">Business Name</div>
-                                    <div class="col-lg-9 col-md-8">
-                                        <?= $acc->BusinessName ?>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Business Name</div>
+                                        <div class="col-lg-9 col-md-8">
+                                            <?= $acc->BusinessName ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <h5 class="card-title">Success Factors</h5>
-                        <div class="row">
                             <div class="col-lg-6">
+                        <h5 class="card-title">Success Factors</h5>
                                 <!-- Radar Chart -->
                                 <div id="radarChart"></div>
 
