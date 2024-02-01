@@ -124,7 +124,7 @@ require_once "components/sidebar.php";
                     <form id="scorecard">
                     <div class="mb-3">
                       <label for="email" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="email" name="Email" placeholder="name@example.com">
+                      <input type="email" class="form-control" id="email" name="Email" placeholder="Enter Email">
                     </div>
                     <input type="hidden" name="viewScorecard"/>
                     <input type="submit" id="viewScorecard" hidden>
