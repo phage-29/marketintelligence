@@ -54,6 +54,29 @@ if (isset($_POST['MSME'])) {
     }
 }
 
+// Registration
+if (isset($_POST['viewScorecard'])) {
+
+    $Email = $conn->real_escape_string($_POST['Email']);
+
+    // Check if a record with the same email exists
+    $queryCheck = "SELECT * FROM `msmes` WHERE `Email` = ?";
+    $resultCheck = $conn->execute_query($queryCheck, [$Email]);
+
+    if ($resultCheck->num_rows > 0) {
+        
+            $_SESSION['Email'] = $Email;
+            $response['status'] = 'success';
+            $response['message'] = 'MSME information updated!';
+            $response['redirect'] = 'success-factors.php';
+        
+    } else {
+        // Record doesn't exist, insert a new one
+        $response['status'] = 'error';
+        $response['message'] = 'Take assessment first to view Scorecard!';
+    }
+}
+
 if (isset($_POST['Login'])) {
 
     $Username = $conn->real_escape_string($_POST['Username']);
