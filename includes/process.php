@@ -68,7 +68,7 @@ if (isset($_POST['viewScorecard'])) {
             $_SESSION['Email'] = $Email;
             $response['status'] = 'success';
             $response['message'] = 'MSME information updated!';
-            $response['redirect'] = 'success-factors.php';
+            $response['redirect'] = 'generated-scorecard.php';
         
     } else {
         // Record doesn't exist, insert a new one
