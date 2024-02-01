@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "Password@123!";
+$username = "zoomrequestadmin";
+$password = "!r7TG4WuxCRJUgoo";
 $database = "marketinteldb";
 
 $conn = new mysqli($servername, $username, $password, $database);
