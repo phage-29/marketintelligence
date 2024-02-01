@@ -106,6 +106,7 @@ require_once "components/sidebar.php";
               </div>
               <div class="mb-3 text-end">
                 <input type="hidden" name="MSME" />
+                <button type="button" onclick="location='includes/clear.php'" class="btn btn-secondary">Clear</button>
                 <button type="submit" class="btn btn-primary">Next</button>
               </div>
             </form>
