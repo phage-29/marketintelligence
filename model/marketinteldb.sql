@@ -35,7 +35,7 @@ CREATE TABLE `assessments` (
   `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ModifiedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,10 +56,10 @@ DROP TABLE IF EXISTS `cfmains`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cfmains` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `Name` varchar(255) NOT NULL,
+  `Name` varchar(150) NOT NULL,
   `Description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,10 +82,10 @@ DROP TABLE IF EXISTS `cfsubmains`;
 CREATE TABLE `cfsubmains` (
   `id` int NOT NULL AUTO_INCREMENT,
   `CFMID` int NOT NULL,
-  `Name` varchar(255) NOT NULL,
+  `Name` varchar(150) NOT NULL,
   `Description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,21 +107,21 @@ DROP TABLE IF EXISTS `msmes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `msmes` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `FirstName` varchar(255) NOT NULL,
-  `MiddleName` varchar(255) DEFAULT NULL,
-  `LastName` varchar(255) NOT NULL,
-  `Email` varchar(255) NOT NULL,
+  `FirstName` varchar(150) NOT NULL,
+  `MiddleName` varchar(150) DEFAULT NULL,
+  `LastName` varchar(150) NOT NULL,
+  `Email` varchar(150) NOT NULL,
   `Phone` varchar(20) DEFAULT NULL,
   `Province` varchar(50) NOT NULL,
-  `IndustryCluster` varchar(255) NOT NULL,
-  `BusinessName` varchar(255) NOT NULL,
+  `IndustryCluster` varchar(150) NOT NULL,
+  `BusinessName` varchar(150) NOT NULL,
   `RegistrationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `LastLogin` timestamp NULL DEFAULT NULL,
   `Status` varchar(100) NOT NULL DEFAULT 'active',
   PRIMARY KEY (`id`),
   UNIQUE KEY `Email_UNIQUE` (`Email`),
   UNIQUE KEY `BusinessName_UNIQUE` (`BusinessName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,12 +142,12 @@ DROP TABLE IF EXISTS `sfmains`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sfmains` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `Name` varchar(255) NOT NULL,
+  `Name` varchar(150) NOT NULL,
   `Description` text NOT NULL,
   `Rank` int NOT NULL,
   `Weight` double(11,5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,12 +170,12 @@ DROP TABLE IF EXISTS `sfsubmains`;
 CREATE TABLE `sfsubmains` (
   `id` int NOT NULL AUTO_INCREMENT,
   `SFMID` int NOT NULL,
-  `Name` varchar(255) NOT NULL,
+  `Name` varchar(150) NOT NULL,
   `Description` text NOT NULL,
   `Rank` int NOT NULL,
   `Weight` double(11,5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,10 +198,10 @@ DROP TABLE IF EXISTS `swots`;
 CREATE TABLE `swots` (
   `id` int NOT NULL AUTO_INCREMENT,
   `Category` varchar(45) NOT NULL,
-  `Name` varchar(255) NOT NULL,
+  `Name` varchar(150) NOT NULL,
   `Description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,12 +225,12 @@ CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `Username` varchar(50) NOT NULL,
   `Email` varchar(100) NOT NULL,
-  `Password` varchar(255) NOT NULL,
+  `Password` varchar(150) NOT NULL,
   `Role` enum('user','admin') DEFAULT 'user',
   `CreatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `UpdatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

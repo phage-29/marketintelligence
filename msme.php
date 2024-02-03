@@ -91,9 +91,9 @@ require_once "components/sidebar.php";
                     <option value="Mfg Agribusiness Bamboo" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Bamboo" ? 'selected' : '' ?>>Mfg Agribusiness Bamboo</option>
                     <option value="Mfg Agribusiness Cacao" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Cacao" ? 'selected' : '' ?>>Mfg Agribusiness Cacao</option>
                     <option value="Mfg Agribusiness Coconut" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Coconut" ? 'selected' : '' ?>>Mfg Agribusiness Coconut</option>
-                    <option value="Mfg Agribusiness Coffee" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Coffee" ? 'selected' : '' ?>>Mfg Agribusiness Coffee</option>
-                    <option value="Mfg Agribusiness Palm Oil" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Palm Oil" ? 'selected' : '' ?>>Mfg Agribusiness Palm Oil</option>
-                    <option value="Mfg Agribusiness Rubber" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Rubber" ? 'selected' : '' ?>>Mfg Agribusiness Rubber</option>
+                    <option value="Mfg Agribusiness Coffee" <?= isset($acc) && $acc->IndustryCluster == "Processed Fruits an Nuts" ? 'selected' : '' ?>>Processed Fruits an Nuts</option>
+                    <option value="Processed Fruits an Nuts" <?= isset($acc) && $acc->IndustryCluster == "Processed Fruits an Nuts" ? 'selected' : '' ?>>Processed Fruits an Nuts</option>
+                    <option value="Wearables and Homestyle" <?= isset($acc) && $acc->IndustryCluster == "Wearables and Homestyle" ? 'selected' : '' ?>>Wearables and Homestyle</option>
                   </select>
                 </div>
               </div>
