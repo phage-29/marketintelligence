@@ -90,6 +90,41 @@ $(document).ready(function () {
         },
       });
     });
+
+    $("#scorecard").submit(function (e) {
+      e.preventDefault();
+      const formData = $(this).serialize();
+      $.ajax({
+        type: "POST",
+        url: "includes/process.php",
+        data: formData,
+        dataType: "json",
+        success: function (response) {
+          if (response.status === "success") {
+            location = response.redirect;
+          }
+          if (response.status === "error") {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: response.message,
+            });
+            if (response.redirect) {
+              setTimeout(function () {
+                location = response.redirect;
+              }, 750);
+            }
+          }
+        },
+        error: function () {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "An error occurred.",
+          });
+        },
+      });
+    });
   }
   if ($("#SuccessFactor").length) {
     $("#SuccessFactor").submit(function (e) {
