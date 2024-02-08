@@ -74,26 +74,14 @@ require_once "components/sidebar.php";
                   <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
                   <select class="form-select" id="IndustryCluster" name="IndustryCluster" required>
                     <option value="" class="text-muted" selected disabled>--Select an Industry Cluster--</option>
-                    <option value="Abaca" <?= isset($acc) && $acc->IndustryCluster == "Abaca" ? 'selected' : '' ?>>Abaca</option>
-                    <option value="Agribusiness" <?= isset($acc) && $acc->IndustryCluster == "Agribusiness" ? 'selected' : '' ?>>Agribusiness</option>
-                    <option value="Bamboo" <?= isset($acc) && $acc->IndustryCluster == "Bamboo" ? 'selected' : '' ?>>Bamboo</option>
-                    <option value="Cacao" <?= isset($acc) && $acc->IndustryCluster == "Cacao" ? 'selected' : '' ?>>Cacao</option>
-                    <option value="Coco Coir" <?= isset($acc) && $acc->IndustryCluster == "Coco Coir" ? 'selected' : '' ?>>Coco Coir</option>
-                    <option value="Coconut" <?= isset($acc) && $acc->IndustryCluster == "Coconut" ? 'selected' : '' ?>>Coconut</option>
-                    <option value="Coffee" <?= isset($acc) && $acc->IndustryCluster == "Coffee" ? 'selected' : '' ?>>Coffee</option>
-                    <option value="Construction" <?= isset($acc) && $acc->IndustryCluster == "Construction" ? 'selected' : '' ?>>Construction</option>
-                    <option value="Creative Industry" <?= isset($acc) && $acc->IndustryCluster == "Creative Industry" ? 'selected' : '' ?>>Creative Industry</option>
-                    <option value="Dairy" <?= isset($acc) && $acc->IndustryCluster == "Dairy" ? 'selected' : '' ?>>Dairy</option>
-                    <option value="Fish and Fish Products" <?= isset($acc) && $acc->IndustryCluster == "Fish and Fish Products" ? 'selected' : '' ?>>Fish and Fish Products</option>
-                    <option value="High Value Vegetables" <?= isset($acc) && $acc->IndustryCluster == "High Value Vegetables" ? 'selected' : '' ?>>High Value Vegetables</option>
-                    <option value="ICT" <?= isset($acc) && $acc->IndustryCluster == "ICT" ? 'selected' : '' ?>>ICT</option>
-                    <option value="Mfg Aerospace Parts" <?= isset($acc) && $acc->IndustryCluster == "Mfg Aerospace Parts" ? 'selected' : '' ?>>Mfg Aerospace Parts</option>
-                    <option value="Mfg Agribusiness Bamboo" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Bamboo" ? 'selected' : '' ?>>Mfg Agribusiness Bamboo</option>
-                    <option value="Mfg Agribusiness Cacao" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Cacao" ? 'selected' : '' ?>>Mfg Agribusiness Cacao</option>
-                    <option value="Mfg Agribusiness Coconut" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Coconut" ? 'selected' : '' ?>>Mfg Agribusiness Coconut</option>
-                    <option value="Mfg Agribusiness Coffee" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Coffee" ? 'selected' : '' ?>>Mfg Agribusiness Coffee</option>
-                    <option value="Mfg Agribusiness Palm Oil" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Palm Oil" ? 'selected' : '' ?>>Mfg Agribusiness Palm Oil</option>
-                    <option value="Mfg Agribusiness Rubber" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Rubber" ? 'selected' : '' ?>>Mfg Agribusiness Rubber</option>
+                    <?php
+                    $query = $conn->query("SELECT * FROM industryclusters");
+                    while ($row = $query->fetch_object()) {
+                    ?>
+                      <option value="<?= $row->IndustryCluster ?>" <?= isset($acc) && $acc->IndustryCluster == $row->IndustryCluster ? 'selected' : '' ?>><?= $row->IndustryCluster ?></option>
+                    <?php
+                    }
+                    ?>
                   </select>
                 </div>
               </div>
@@ -104,9 +92,41 @@ require_once "components/sidebar.php";
                   <input type="text" class="form-control" id="BusinessName" name="BusinessName" value="<?= isset($acc) ? $acc->BusinessName : '' ?>" placeholder="Enter Business Name" required />
                 </div>
               </div>
+              <div class="row">
+                <div class="mb-3 col-lg-6">
+                  <label for="EDTLevel" class="form-label">EDT Level</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                    <select class="form-select" id="EDTLevel" name="EDTLevel" required>
+                      <option value="" class="text-muted" selected disabled>--Select a EDT Level--</option>
+                      <option value="Level 0 - Entrepreneurial Mind Setting" <?= isset($acc) && $acc->EDTLevel == "Level 0 - Entrepreneurial Mind Setting" ? 'selected' : '' ?>>Level 0 - Entrepreneurial Mind Setting</option>
+                      <option value="Level 1.1 - Nurturing Start Up (Not registered)" <?= isset($acc) && $acc->EDTLevel == "Level 1.1 - Nurturing Start Up (Not registered)" ? 'selected' : '' ?>>Level 1.1 - Nurturing Start Up (Not registered)</option>
+                      <option value="Level 1.1 - Nurturing Start Up (Partially registered)" <?= isset($acc) && $acc->EDTLevel == "Level 1.1 - Nurturing Start Up (Partially registered)" ? 'selected' : '' ?>>Level 1.1 - Nurturing Start Up (Partially registered)</option>
+                      <option value="Level 2 - Growing Enterprises" <?= isset($acc) && $acc->EDTLevel == "Level 2 - Growing Enterprises" ? 'selected' : '' ?>>Level 2 - Growing Enterprises</option>
+                      <option value="Level 3 - Expanding Enterprises" <?= isset($acc) && $acc->EDTLevel == "Level 3 - Expanding Enterprises" ? 'selected' : '' ?>>Level 3 - Expanding Enterprises</option>
+                      <option value="Level 4 - Sustaining Enterprises" <?= isset($acc) && $acc->EDTLevel == "Level 4 - Sustaining Enterprises" ? 'selected' : '' ?>>Level 4 - Sustaining Enterprises</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3 col-lg-6">
+                  <label for="AssetSize" class="form-label">Asset Size</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                    <select class="form-select" id="AssetSize" name="AssetSize" required>
+                      <option value="" class="text-muted" selected disabled>--Select a AssetSize--</option>
+                      <option value="Below 100,000.00php" <?= isset($acc) && $acc->AssetSize == "Below 100,000.00php" ? 'selected' : '' ?>>Below 100,000.00php</option>
+                      <option value="100,001.00php - 500,000.00php" <?= isset($acc) && $acc->AssetSize == "100,001.00php - 500,000.00php" ? 'selected' : '' ?>>100,001.00php - 500,000.00php</option>
+                      <option value="500,001.00php - 1,500,000.00php" <?= isset($acc) && $acc->AssetSize == "500,001.00php - 1,500,000.00php" ? 'selected' : '' ?>>500,001.00php - 1,500,000.00php</option>
+                      <option value="1,500,001.00php - 3,000,000.00php" <?= isset($acc) && $acc->AssetSize == "1,500,001.00php - 3,000,000.00php" ? 'selected' : '' ?>>1,500,001.00php - 3,000,000.00php</option>
+                      <option value="3,000,001.00php - 5,000,000.00php" <?= isset($acc) && $acc->AssetSize == "3,000,001.00php - 5,000,000.00php" ? 'selected' : '' ?>>3,000,001.00php - 5,000,000.00php</option>
+                      <option value="5,000,000.01php - 10,000,000.00php" <?= isset($acc) && $acc->AssetSize == "5,000,000.01php - 10,000,000.00php" ? 'selected' : '' ?>>5,000,000.01php - 10,000,000.00php</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
               <div class="mb-3 text-end">
                 <input type="hidden" name="MSME" />
-                <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-outline-primary">View Scorecard</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-outline-primary">View Scorecard</button>
                 <button type="button" onclick="location='includes/clear.php'" class="btn btn-secondary">Clear</button>
                 <button type="submit" class="btn btn-primary">Next</button>
                 <!-- Button trigger modal -->
@@ -122,12 +142,12 @@ require_once "components/sidebar.php";
                   </div>
                   <div class="modal-body">
                     <form id="scorecard">
-                    <div class="mb-3">
-                      <label for="email" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="email" name="Email" placeholder="Enter Email">
-                    </div>
-                    <input type="hidden" name="viewScorecard"/>
-                    <input type="submit" id="viewScorecard" hidden>
+                      <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" name="Email" placeholder="Enter Email">
+                      </div>
+                      <input type="hidden" name="viewScorecard" />
+                      <input type="submit" id="viewScorecard" hidden>
                     </form>
                   </div>
                   <div class="modal-footer">

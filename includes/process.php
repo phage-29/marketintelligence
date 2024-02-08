@@ -18,6 +18,8 @@ if (isset($_POST['MSME'])) {
     $Province = $conn->real_escape_string($_POST['Province']);
     $IndustryCluster = $conn->real_escape_string($_POST['IndustryCluster']);
     $BusinessName = $conn->real_escape_string($_POST['BusinessName']);
+    $EDTLevel = $conn->real_escape_string($_POST['EDTLevel']);
+    $AssetSize = $conn->real_escape_string($_POST['AssetSize']);
 
     // Check if a record with the same email exists
     $queryCheck = "SELECT * FROM `msmes` WHERE `Email` = ?";
@@ -25,8 +27,8 @@ if (isset($_POST['MSME'])) {
 
     if ($resultCheck->num_rows > 0) {
         // Record exists, update it
-        $queryUpdate = "UPDATE `msmes` SET `FirstName` = ?, `MiddleName` = ?, `LastName` = ?, `Phone` = ?, `Province` = ?, `IndustryCluster` = ?, `BusinessName` = ? WHERE `Email` = ?";
-        $resultUpdate = $conn->execute_query($queryUpdate, [$FirstName, $MiddleName, $LastName, $Phone, $Province, $IndustryCluster, $BusinessName, $Email]);
+        $queryUpdate = "UPDATE `msmes` SET `FirstName` = ?, `MiddleName` = ?, `LastName` = ?, `Phone` = ?, `Province` = ?, `IndustryCluster` = ?, `BusinessName` = ?, `EDTLevel` = ?, `AssetSize` = ? WHERE `Email` = ?";
+        $resultUpdate = $conn->execute_query($queryUpdate, [$FirstName, $MiddleName, $LastName, $Phone, $Province, $IndustryCluster, $BusinessName, $EDTLevel, $AssetSize, $Email]);
 
         if ($resultUpdate) {
             $_SESSION['Email'] = $Email;
@@ -39,8 +41,8 @@ if (isset($_POST['MSME'])) {
         }
     } else {
         // Record doesn't exist, insert a new one
-        $queryInsert = "INSERT INTO `msmes` (`FirstName`, `MiddleName`, `LastName`, `Email`, `Phone`, `Province`, `IndustryCluster`, `BusinessName`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $resultInsert = $conn->execute_query($queryInsert, [$FirstName, $MiddleName, $LastName, $Email, $Phone, $Province, $IndustryCluster, $BusinessName]);
+        $queryInsert = "INSERT INTO `msmes` (`FirstName`, `MiddleName`, `LastName`, `Email`, `Phone`, `Province`, `IndustryCluster`, `BusinessName`, `EDTLevel`, `AssetSize`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $resultInsert = $conn->execute_query($queryInsert, [$FirstName, $MiddleName, $LastName, $Email, $Phone, $Province, $IndustryCluster, $BusinessName, $EDTLevel, $AssetSize]);
 
         if ($resultInsert) {
             $_SESSION['Email'] = $Email;
