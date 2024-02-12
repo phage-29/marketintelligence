@@ -9,7 +9,9 @@ require_once "components/sidebar.php";
   <section class="section container">
     <div class="row">
       <div class="col-lg-12 align-self-center">
-
+        <div>
+          <p><strong>Directions:</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde voluptatum quae aut distinctio iste, itaque qui commodi enim, optio expedita vero aliquam iure? Placeat provident dicta obcaecati velit asperiores voluptate?</p>
+        </div>
         <div class="card">
           <div class="card-body">
             <h5 class="card-title"><?= $page ?></h5>
@@ -32,7 +34,7 @@ require_once "components/sidebar.php";
                         while ($row2 = $result2->fetch_object()) {
                         ?>
                           <li class="d-flex justify-content-between align-items-center mt-3">
-                            <?= $row2->Name ?>
+                            <p title="<?= $row2->Description ?>"><?= $row2->Name ?></p>
                             <button type="button" class="btn btn-sm btn-primary add-swot" data-id="<?= $row2->id ?>" data-msmeid="<?= $acc->id ?>" data-category="<?= $row->Category ?>">+</button>
                           </li>
                         <?php
@@ -55,7 +57,7 @@ require_once "components/sidebar.php";
                         while ($row2 = $result2->fetch_object()) {
                         ?>
                           <li class="d-flex justify-content-between align-items-center mt-3">
-                            <?= $row2->Name ?>
+                            <p title="<?= $row2->Description ?>"><?= $row2->Name ?></p>
                             <button type="button" class="btn btn-sm btn-danger del-swot" data-id="<?= $row2->id ?>" data-msmeid="<?= $acc->id ?>" data-category="<?= $row->Category ?>">X</button>
                           </li>
                         <?php

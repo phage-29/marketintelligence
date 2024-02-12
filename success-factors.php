@@ -9,6 +9,9 @@ require_once "components/sidebar.php";
   <section class="section container">
     <div class="row">
       <div class="col-lg-12 align-self-center">
+        <div>
+          <p><strong>Directions:</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde voluptatum quae aut distinctio iste, itaque qui commodi enim, optio expedita vero aliquam iure? Placeat provident dicta obcaecati velit asperiores voluptate?</p>
+        </div>
         <div class="card">
           <div class="card-body">
             <h5 class="card-title"><?= $page ?></h5>
@@ -21,7 +24,7 @@ require_once "components/sidebar.php";
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="heading<?= $row->id ?>">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $row->id ?>" aria-expanded="true" aria-controls="collapse<?= $row->id ?>">
-                      <?= $row->Description ?>
+                    <?= $row->Name ?> - <?= $row->Description ?>
                     </button>
                   </h2>
                   <div id="collapse<?= $row->id ?>" class="accordion-collapse collapse show" aria-labelledby="heading<?= $row->id ?>" data-bs-parent="#sfmain">
@@ -31,19 +34,11 @@ require_once "components/sidebar.php";
                           <thead>
                             <tr>
                               <th scope="col">Factors</th>
-<<<<<<< HEAD
-                              <th scope="col" class="text-center" style="width: 8vw;">Strongly Agree</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Agree</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Fair</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Disagree</th>
-                              <th scope="col" class="text-center" style="width: 8vw;">Strongly Disagree</th>
-=======
                               <th scope="col" class="text-center" style="width: 8vw;">Very High</th>
                               <th scope="col" class="text-center" style="width: 8vw;">High</th>
                               <th scope="col" class="text-center" style="width: 8vw;">Average</th>
                               <th scope="col" class="text-center" style="width: 8vw;">Low</th>
                               <th scope="col" class="text-center" style="width: 8vw;">Very Low</th>
->>>>>>> ef56787e44e853ed813826455fafd21a8f9fb000
                             </tr>
                           </thead>
                           <tbody>
@@ -56,7 +51,7 @@ require_once "components/sidebar.php";
                               <form class="sf-assessment">
                                 <tr>
                                   <td>
-                                    <?= $row2->Description ?>
+                                    <?= $row2->Name ?> - <?= $row2->Description ?>
                                     <input type="hidden" name="MSMEID" value="<?= $acc->id ?>" />
                                     <input type="hidden" name="SFMID" value="<?= $row->id ?>" />
                                     <input type="hidden" name="SFSID" value="<?= $row2->id ?>" />

@@ -623,6 +623,10 @@ $(document).ready(function () {
         $("#Phone").val(response.Phone);
         $("#Province").val(response.Province);
         $("#IndustryCluster").val(response.IndustryCluster);
+        $("#EDTLevel").val(response.EDTLevel);
+        console.log(response.EDTLevel);
+        $("#AssetSize").val(response.AssetSize);
+        console.log(response.AssetSize);
         $("#BusinessName").val(response.BusinessName);
       },
       error: function (xhr, status, error) {

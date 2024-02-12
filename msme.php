@@ -9,7 +9,9 @@ require_once "components/sidebar.php";
   <section class="section container">
     <div class="row">
       <div class="col-lg-12 align-self-center">
-
+        <div>
+          <p><strong>Directions:</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde voluptatum quae aut distinctio iste, itaque qui commodi enim, optio expedita vero aliquam iure? Placeat provident dicta obcaecati velit asperiores voluptate?</p>
+        </div>
         <div class="card">
           <div class="card-body">
             <h5 class="card-title"><?= $page ?> Profile</h5>
@@ -74,7 +76,6 @@ require_once "components/sidebar.php";
                   <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
                   <select class="form-select" id="IndustryCluster" name="IndustryCluster" required>
                     <option value="" class="text-muted" selected disabled>--Select an Industry Cluster--</option>
-<<<<<<< HEAD
                     <?php
                     $query = $conn->query("SELECT * FROM industryclusters");
                     while ($row = $query->fetch_object()) {
@@ -83,28 +84,6 @@ require_once "components/sidebar.php";
                     <?php
                     }
                     ?>
-=======
-                    <option value="Abaca" <?= isset($acc) && $acc->IndustryCluster == "Abaca" ? 'selected' : '' ?>>Abaca</option>
-                    <option value="Agribusiness" <?= isset($acc) && $acc->IndustryCluster == "Agribusiness" ? 'selected' : '' ?>>Agribusiness</option>
-                    <option value="Bamboo" <?= isset($acc) && $acc->IndustryCluster == "Bamboo" ? 'selected' : '' ?>>Bamboo</option>
-                    <option value="Cacao" <?= isset($acc) && $acc->IndustryCluster == "Cacao" ? 'selected' : '' ?>>Cacao</option>
-                    <option value="Coco Coir" <?= isset($acc) && $acc->IndustryCluster == "Coco Coir" ? 'selected' : '' ?>>Coco Coir</option>
-                    <option value="Coconut" <?= isset($acc) && $acc->IndustryCluster == "Coconut" ? 'selected' : '' ?>>Coconut</option>
-                    <option value="Coffee" <?= isset($acc) && $acc->IndustryCluster == "Coffee" ? 'selected' : '' ?>>Coffee</option>
-                    <option value="Construction" <?= isset($acc) && $acc->IndustryCluster == "Construction" ? 'selected' : '' ?>>Construction</option>
-                    <option value="Creative Industry" <?= isset($acc) && $acc->IndustryCluster == "Creative Industry" ? 'selected' : '' ?>>Creative Industry</option>
-                    <option value="Dairy" <?= isset($acc) && $acc->IndustryCluster == "Dairy" ? 'selected' : '' ?>>Dairy</option>
-                    <option value="Fish and Fish Products" <?= isset($acc) && $acc->IndustryCluster == "Fish and Fish Products" ? 'selected' : '' ?>>Fish and Fish Products</option>
-                    <option value="High Value Vegetables" <?= isset($acc) && $acc->IndustryCluster == "High Value Vegetables" ? 'selected' : '' ?>>High Value Vegetables</option>
-                    <option value="ICT" <?= isset($acc) && $acc->IndustryCluster == "ICT" ? 'selected' : '' ?>>ICT</option>
-                    <option value="Mfg Aerospace Parts" <?= isset($acc) && $acc->IndustryCluster == "Mfg Aerospace Parts" ? 'selected' : '' ?>>Mfg Aerospace Parts</option>
-                    <option value="Mfg Agribusiness Bamboo" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Bamboo" ? 'selected' : '' ?>>Mfg Agribusiness Bamboo</option>
-                    <option value="Mfg Agribusiness Cacao" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Cacao" ? 'selected' : '' ?>>Mfg Agribusiness Cacao</option>
-                    <option value="Mfg Agribusiness Coconut" <?= isset($acc) && $acc->IndustryCluster == "Mfg Agribusiness Coconut" ? 'selected' : '' ?>>Mfg Agribusiness Coconut</option>
-                    <option value="Mfg Agribusiness Coffee" <?= isset($acc) && $acc->IndustryCluster == "Processed Fruits an Nuts" ? 'selected' : '' ?>>Processed Fruits an Nuts</option>
-                    <option value="Processed Fruits an Nuts" <?= isset($acc) && $acc->IndustryCluster == "Processed Fruits an Nuts" ? 'selected' : '' ?>>Processed Fruits an Nuts</option>
-                    <option value="Wearables and Homestyle" <?= isset($acc) && $acc->IndustryCluster == "Wearables and Homestyle" ? 'selected' : '' ?>>Wearables and Homestyle</option>
->>>>>>> 77a15e6725de643967c8ef0f22df034d2570ad7c
                   </select>
                 </div>
               </div>

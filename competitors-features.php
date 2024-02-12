@@ -9,7 +9,9 @@ require_once "components/sidebar.php";
   <section class="section container">
     <div class="row">
       <div class="col-lg-12 align-self-center">
-
+        <div>
+          <p><strong>Directions:</strong>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde voluptatum quae aut distinctio iste, itaque qui commodi enim, optio expedita vero aliquam iure? Placeat provident dicta obcaecati velit asperiores voluptate?</p>
+        </div>
         <div class="card">
           <div class="card-body">
             <h5 class="card-title"><?= $page ?></h5>
@@ -30,10 +32,10 @@ require_once "components/sidebar.php";
                   while ($row = $result->fetch_object()) {
                   ?>
                     <tr>
-                      <th class="text-center">
+                      <th class="text-center" title="<?= $row->Description ?>">
                         <?= $row->Name ?>
                       </th>
-                      <th>
+                      <th width="50px">
                         <br>
                       </th>
                     </tr>
@@ -46,7 +48,7 @@ require_once "components/sidebar.php";
                       $cf_exist  = $conn->query($check_ass)->num_rows;
                     ?>
                       <tr>
-                        <td>
+                        <td title="<?= $row2->Description ?>">
                           <?= $row2->Name ?>
                           <button type="button" data-msmeid="<?= $acc->id ?>" data-cfmid="<?= $row->id ?>" data-cfsid="<?= $row2->id ?>" id="Add_<?= $CfsId ?>" class="btn btn-success float-end add-cf">Add</button>
                           <button type="button" data-msmeid="<?= $acc->id ?>" data-cfmid="<?= $row->id ?>" data-cfsid="<?= $row2->id ?>" id="Remove_<?= $CfsId ?>" class="btn btn-danger float-end del-cf" style="display: none;">Remove</button>
