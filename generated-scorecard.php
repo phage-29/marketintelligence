@@ -11,14 +11,16 @@ require_once "components/header.php";
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6">
-                        <h5 class="card-title">MSME Profile</h5>
+                            <div class="col-lg-12">
+                                <h5 class="card-title">MSME Profile</h5>
                                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                     <br>
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label ">Full Name</div>
                                         <div class="col-lg-9 col-md-8">
-                                            <?= $acc->FirstName ?> <?= $acc->MiddleName ?> <?= $acc->LastName ?>
+                                            <?= $acc->FirstName ?>
+                                            <?= $acc->MiddleName ?>
+                                            <?= $acc->LastName ?>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -56,7 +58,7 @@ require_once "components/header.php";
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                        <h5 class="card-title">Success Factors</h5>
+                                <h5 class="card-title">Success Factors</h5>
                                 <!-- Radar Chart -->
                                 <div id="radarChart"></div>
 
@@ -133,18 +135,198 @@ require_once "components/header.php";
                                 </script>
                                 <!-- End Radar Chart -->
                             </div>
+                            <div class="col-lg-6">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <?php
+            $query = $conn->query("SELECT * FROM sfmains");
+            while ($row = $query->fetch_object()) {
+            ?>
+                <a class="nav-item nav-link <?= $row->Name == 'EC'?'active':'' ?>" id="chart-nav-<?= $row->id ?>-tab" data-bs-toggle="tab" href="#chart-nav-<?= $row->id ?>" role="tab" aria-controls="chart-nav-<?= $row->id ?>" aria-selected="true">
+                    <?= $row->Name ?>
+                </a>
+            <?php
+            }
+            ?>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <?php
+        $query = $conn->query("SELECT * FROM sfmains");
+        while ($row = $query->fetch_object()) {
+        ?>
+            <div class="tab-pane fade <?= $row->Name == 'EC'?'show active':'' ?>" id="chart-nav-<?= $row->id ?>" role="tabpanel" aria-labelledby="chart-nav-<?= $row->id ?>-tab">
+
+                <!-- Radar Chart -->
+                <div id="colchart<?= $row->id ?>" class="apexcharts-placeholder"></div>
+                <!-- End Radar Chart -->
+
+                <script>
+                    $(document).ready(function(){
+                        var options<?= $row->id ?> = {
+                            series: [{
+                                name: 'Score',
+                                data: [
+                                    <?php
+                                    $query2 = "
+                                        SELECT sfs.*, (
+                                                SELECT
+                                                    a.`Value` / 5 * sfs.`Weight`
+                                                FROM assessments a
+                                                WHERE
+                                                    a.`MSMEID` = 1
+                                                    AND a.`AssessmentType` = 'success factors'
+                                                    AND a.`SFSID` = sfs.id
+                                            ) AS TotalValue,
+                                            ((
+                                                SELECT
+                                                    a.`Value` / 5 * sfs.`Weight`
+                                                FROM assessments a
+                                                WHERE
+                                                    a.`MSMEID` = 1
+                                                    AND a.`AssessmentType` = 'success factors'
+                                                    AND a.`SFSID` = sfs.id
+                                            ) / sfs.`Weight`)*100 AS Perc
+                                        FROM sfsubmains sfs
+                                        WHERE sfs.SFMID = " . $row->id . "
+                                        ORDER BY sfs.Rank ASC
+                                    ";
+                                    $result2 = $conn->query($query2);
+                                    while ($row2 = $result2->fetch_object()) {
+                                        echo "parseInt('" . number_format($row2->Perc, 5, '.', '') . "'),";
+                                    }
+                                    ?>
+                                ]
+                            }],
+                            chart: {
+                                height: 350,
+                                type: 'bar',
+                            },
+                            plotOptions: {
+                                bar: {
+                                    borderRadius: 10,
+                                    dataLabels: {
+                                        position: 'top', // top, center, bottom
+                                    },
+                                }
+                            },
+                            dataLabels: {
+                                enabled: true,
+                                formatter: function (val) {
+                                    return val + "%";
+                                },
+                                offsetY: -20,
+                                style: {
+                                    fontSize: '12px',
+                                    colors: ["#304758"]
+                                }
+                            },
+                            xaxis: {
+                                categories: [
+                                    <?php
+                                    $query2 = "
+                                        SELECT sfs.*, (
+                                                SELECT
+                                                    a.`Value` / 5 * sfs.`Weight`
+                                                FROM assessments a
+                                                WHERE
+                                                    a.`MSMEID` = 1
+                                                    AND a.`AssessmentType` = 'success factors'
+                                                    AND a.`SFSID` = sfs.id
+                                            ) AS TotalValue,
+                                            ((
+                                                SELECT
+                                                    a.`Value` / 5 * sfs.`Weight`
+                                                FROM assessments a
+                                                WHERE
+                                                    a.`MSMEID` = 1
+                                                    AND a.`AssessmentType` = 'success factors'
+                                                    AND a.`SFSID` = sfs.id
+                                            ) / sfs.`Weight`)*100 AS Perc
+                                        FROM sfsubmains sfs
+                                        WHERE sfs.SFMID = " . $row->id . "
+                                        ORDER BY sfs.Rank ASC
+                                    ";
+                                    $result2 = $conn->query($query2);
+                                    while ($row2 = $result2->fetch_object()) {
+                                        echo '"' . $row2->Name . '",';
+                                    }
+                                    ?>
+                                ],
+                                position: 'top',
+                                axisBorder: {
+                                    show: false
+                                },
+                                axisTicks: {
+                                    show: false
+                                },
+                                crosshairs: {
+                                    fill: {
+                                        type: 'gradient',
+                                        gradient: {
+                                            colorFrom: '#D8E3F0',
+                                            colorTo: '#BED1E6',
+                                            stops: [0, 100],
+                                            opacityFrom: 0.4,
+                                            opacityTo: 0.5,
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    enabled: true,
+                                }
+                            },
+                            yaxis: {
+                                axisBorder: {
+                                    show: false
+                                },
+                                axisTicks: {
+                                    show: false,
+                                },
+                                labels: {
+                                    show: false,
+                                    formatter: function (val) {
+                                        return val + "%";
+                                    }
+                                }
+
+                            },
+                            title: {
+                                text: '<?= $row->Description ?>',
+                                floating: true,
+                                offsetY: 330,
+                                align: 'center',
+                                style: {
+                                    color: '#444'
+                                }
+                            }
+                        };
+
+                        var colchart<?= $row->id ?> = new ApexCharts(document.querySelector("#colchart<?= $row->id ?>"), options<?= $row->id ?>);
+                        colchart<?= $row->id ?>.render();
+                    });
+                </script>
+
+            </div>
+        <?php
+        }
+        ?>
+    </div>
+</div>
+
                             <?php
                             $query = $conn->query("SELECT * FROM sfmains");
                             while ($row = $query->fetch_object()) {
-                            ?>
+                                ?>
                                 <div class="col-lg-12">
-                                <h5 class="card-title"><?= $row->Name . " | " . $row->Description ?></h5>
+                                    <h5 class="card-title">
+                                        <?= $row->Name . " | " . $row->Description ?>
+                                    </h5>
                                     <table class="table" id="sfsdatatable<?= $row->id ?>" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Description</th>
-                                                <th>Rank</th>
                                                 <th>Percentage</th>
                                             </tr>
                                         </thead>
@@ -175,20 +357,25 @@ require_once "components/header.php";
                                             ";
                                             $result2 = $conn->query($query2);
                                             while ($row2 = $result2->fetch_object()) {
-                                            ?>
+                                                ?>
                                                 <tr>
-                                                    <td><?= $row2->Name ?></td>
-                                                    <td><?= $row2->Description ?></td>
-                                                    <td><?= $row2->Rank ?></td>
-                                                    <td><?= number_format($row2->Perc, 2, '.', '') ?>%</td>
+                                                    <td>
+                                                        <?= $row2->Name ?>
+                                                    </td>
+                                                    <td>
+                                                        <?= $row2->Description ?>
+                                                    </td>
+                                                    <td>
+                                                        <?= number_format($row2->Perc, 5, '.', '') ?>%
+                                                    </td>
                                                 </tr>
-                                            <?php
+                                                <?php
                                             }
                                             ?>
                                         </tbody>
                                     </table>
                                     <script>
-                                        $(document).ready(function() {
+                                        $(document).ready(function () {
                                             function initializeDataTable(tableId) {
                                                 $(tableId).removeAttr("hidden");
                                                 $(tableId).DataTable({
@@ -204,7 +391,7 @@ require_once "components/header.php";
                                     </script>
                                     <hr>
                                 </div>
-                            <?php
+                                <?php
                             }
                             ?>
                         </div>
@@ -214,11 +401,12 @@ require_once "components/header.php";
                             $query = "SELECT distinct(`Category`) from `swots`";
                             $result = $conn->execute_query($query);
                             while ($row = $result->fetch_object()) {
-                            ?>
+                                ?>
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                            <?= $row->Category ?> (<?= $row->Category[0] ?>)
+                                            <?= $row->Category ?> (
+                                            <?= $row->Category[0] ?>)
                                         </div>
                                         <div class="card-body" style="height: 300px;overflow-y: auto;">
                                             <ul>
@@ -226,18 +414,18 @@ require_once "components/header.php";
                                                 $query2 = "SELECT * FROM assessments ass LEFT JOIN swots ON ass.SWOTID = swots.id WHERE ass.SWOTID IS NOT NULL AND ass.MSMEID = ? AND swots.Category = ?";
                                                 $result2 = $conn->execute_query($query2, [$acc->id, $row->Category]);
                                                 while ($row2 = $result2->fetch_object()) {
-                                                ?>
+                                                    ?>
                                                     <li class="mt-3">
                                                         <?= $row2->Name ?>
                                                     </li>
-                                                <?php
+                                                    <?php
                                                 }
                                                 ?>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                            <?php
+                                <?php
                             }
                             ?>
                         </div>
@@ -254,10 +442,10 @@ require_once "components/header.php";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $query  = "SELECT * FROM `cfmains`";
+                                    $query = "SELECT * FROM `cfmains`";
                                     $result = $conn->query($query);
                                     while ($row = $result->fetch_object()) {
-                                    ?>
+                                        ?>
                                         <tr>
                                             <th class="text-center">
                                                 <?= $row->Name ?>
@@ -267,19 +455,26 @@ require_once "components/header.php";
                                             </th>
                                         </tr>
                                         <?php
-                                        $query2  = "SELECT * FROM `cfsubmains` WHERE `CFMID`='$row->id'";
+                                        $query2 = "SELECT * FROM `cfsubmains` WHERE `CFMID`='$row->id'";
                                         $result2 = $conn->query($query2);
                                         while ($row2 = $result2->fetch_object()) {
-                                            $CfsId     = $row2->id;
+                                            $CfsId = $row2->id;
                                             $check_ass = "SELECT * FROM `assessments` WHERE `MSMEID`='$acc->id' AND `CFMID`='$row->id' AND `CFSID`='$row2->id'";
-                                            $cf_exist  = $conn->query($check_ass)->num_rows;
-                                        ?>
+                                            $cf_exist = $conn->query($check_ass)->num_rows;
+                                            ?>
                                             <tr>
                                                 <td>
                                                     <?= $row2->Name ?>
-                                                    <button type="button" data-msmeid="<?= $acc->id ?>" data-cfmid="<?= $row->id ?>" data-cfsid="<?= $row2->id ?>" id="Add_<?= $CfsId ?>" class="btn btn-success float-end add-cf" style="display: none;">Add</button>
-                                                    <button type="button" data-msmeid="<?= $acc->id ?>" data-cfmid="<?= $row->id ?>" data-cfsid="<?= $row2->id ?>" id="Remove_<?= $CfsId ?>" class="btn btn-danger float-end del-cf" style="display: none;">Remove</button>
-                                                    <input type="checkbox" id="cfs_<?= $CfsId ?>" name="cfs_<?= $CfsId ?>" style="visibility: hidden;" />
+                                                    <button type="button" data-msmeid="<?= $acc->id ?>"
+                                                        data-cfmid="<?= $row->id ?>" data-cfsid="<?= $row2->id ?>"
+                                                        id="Add_<?= $CfsId ?>" class="btn btn-success float-end add-cf"
+                                                        style="display: none;">Add</button>
+                                                    <button type="button" data-msmeid="<?= $acc->id ?>"
+                                                        data-cfmid="<?= $row->id ?>" data-cfsid="<?= $row2->id ?>"
+                                                        id="Remove_<?= $CfsId ?>" class="btn btn-danger float-end del-cf"
+                                                        style="display: none;">Remove</button>
+                                                    <input type="checkbox" id="cfs_<?= $CfsId ?>" name="cfs_<?= $CfsId ?>"
+                                                        style="visibility: hidden;" />
                                                 </td>
 
                                                 <td id="indicator_<?= $CfsId ?>" style="background: red">
@@ -287,15 +482,15 @@ require_once "components/header.php";
                                                 </td>
                                             </tr>
                                             <script>
-                                                $(document).ready(function() {
+                                                $(document).ready(function () {
 
-                                                    $("#Add_<?= $CfsId ?>").on("click", function() {
+                                                    $("#Add_<?= $CfsId ?>").on("click", function () {
                                                         $("#indicator_<?= $CfsId ?>").css('background', 'green');
                                                         // $("#Remove_<?= $CfsId ?>").show();
                                                         // $("#Add_<?= $CfsId ?>").hide();
                                                         $("#cfs_<?= $CfsId ?>").attr('checked', 'true');
                                                     });
-                                                    $("#Remove_<?= $CfsId ?>").on("click", function() {
+                                                    $("#Remove_<?= $CfsId ?>").on("click", function () {
                                                         $("#indicator_<?= $CfsId ?>").css('background', 'red');
                                                         // $("#Remove_<?= $CfsId ?>").hide();
                                                         // $("#Add_<?= $CfsId ?>").show();
@@ -309,10 +504,10 @@ require_once "components/header.php";
                                                     }
                                                 });
                                             </script>
-                                        <?php
+                                            <?php
                                         }
                                         ?>
-                                    <?php
+                                        <?php
                                     }
                                     ?>
                                 </tbody>

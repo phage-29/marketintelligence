@@ -149,7 +149,7 @@ require_once "components/sidebar.php";
                                         <td class="text-nowrap"><?= $row->Name ?></td>
                                         <td class="text-nowrap"><?= $row->Description ?></td>
                                         <td class="text-nowrap"><?= $row->Rank ?></td>
-                                        <td class="text-nowrap"><?= number_format($row->Weight * 100, 2, '.') ?>%</td>
+                                        <td class="text-nowrap"><?= number_format($row->Weight * 100, 5, '.') ?>%</td>
                                         <td class="text-nowrap">
                                             <button class='editsfm-btn btn btn-success btn-sm rounded-0 mx-1' data-editsfm="<?= $row->id ?>"><i class="bi bi-pencil-square"></i></button>
                                             <button class='delsfm-btn btn btn-danger btn-sm rounded-0 mx-1' data-delsfm="<?= $row->id ?>"><i class="bi bi-trash3-fill"></i></button>
@@ -341,7 +341,7 @@ require_once "components/sidebar.php";
                                         <td class="text-nowrap"><?= $row->Name ?></td>
                                         <td class="text-nowrap"><?= $row->Description ?></td>
                                         <td class="text-nowrap"><?= $row->Rank ?></td>
-                                        <td class="text-nowrap"><?= number_format($row->Weight * 100, 2, '.') ?>%</td>
+                                        <td class="text-nowrap"><?= number_format($row->Weight * 100, 5, '.') ?>%</td>
                                         <td class="text-nowrap">
                                             <button class='editsfs-btn btn btn-success btn-sm rounded-0 mx-1' data-editsfs="<?= $row->id ?>"><i class="bi bi-pencil-square"></i></button>
                                             <button class='delsfs-btn btn btn-danger btn-sm rounded-0 mx-1' data-delsfs="<?= $row->id ?>"><i class="bi bi-trash3-fill"></i></button>
