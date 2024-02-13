@@ -41,7 +41,7 @@ if (isset($_POST['MSME'])) {
         }
     } else {
         // Record doesn't exist, insert a new one
-        $queryInsert = "INSERT INTO `msmes` (`FirstName`, `MiddleName`, `LastName`, `Email`, `Phone`, `Province`, `IndustryCluster`, `BusinessName`, `EDTLevel`, `AssetSize`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $queryInsert = "INSERT INTO `msmes` (`FirstName`, `MiddleName`, `LastName`, `Email`, `Phone`, `Province`, `IndustryCluster`, `BusinessName`, `EDTLevel`, `AssetSize`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $resultInsert = $conn->execute_query($queryInsert, [$FirstName, $MiddleName, $LastName, $Email, $Phone, $Province, $IndustryCluster, $BusinessName, $EDTLevel, $AssetSize]);
 
         if ($resultInsert) {
